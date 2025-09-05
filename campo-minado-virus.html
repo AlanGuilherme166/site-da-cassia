@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Campo Minado Vírus</title>
+    <style>
+        body { background: #f4f4f4; font-family: Arial, sans-serif; text-align: center; }
+        .sidebar {
+            position: fixed; top: 0; left: 0; height: 100%; width: 60px;
+            background-color: #121210; transition: width 0.3s; padding-top: 20px; z-index: 1001; overflow-x: hidden;
+        }
+        .sidebar:hover { width: 200px; }
+        .sidebar ul { list-style: none; padding: 0; }
+        .sidebar ul li { color: azure; padding: 15px; text-align: center; transition: background-color 0.3s; opacity: 1; cursor: pointer; }
+        .sidebar ul li:hover { background-color: #3a3a3a; }
+        .sidebar ul li span { opacity: 0; transition: opacity 0.3s; white-space: nowrap; margin-left: 10px; }
+        .sidebar:hover ul li span { opacity: 1; }
+        #main-content { margin-left: 70px; padding: 20px; }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <ul>
+            <li onclick="window.location.href='dino-bio.html'">🦖<span>Quiz Biologia</span></li>
+            <li onclick="window.location.href='dino-jumper.html'">🦠<span>Bactéria Jumper</span></li>
+            <li onclick="window.location.href='campo-minado-virus.html'">🦠<span>Campo Minado Vírus</span></li>
+            <li onclick="window.location.href='index.html'">🏠<span>Voltar ao Site</span></li>
+        </ul>
+    </div>
+    <div id="main-content">
+        <h1>Campo Minado Vírus</h1>
+        <p>Jogo em construção...</p>
+    </div>
+</body>
+</html>
