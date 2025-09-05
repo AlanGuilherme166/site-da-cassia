@@ -10,13 +10,38 @@
         #question { margin: 20px 0; font-size: 20px; }
         .option { display: block; margin: 10px auto; padding: 10px 20px; border: none; border-radius: 5px; background: #2e7d32; color: #fff; cursor: pointer; font-size: 16px; }
         .option:hover { background: #388e3c; }
-        #result { margin-top: 20px; font-weight: bold; }
+        #result { margin-top: 20px; font-weight: bold; min-height: 40px; }
+        #confetti-canvas { position: fixed; pointer-events: none; left: 0; top: 0; width: 100vw; height: 100vh; z-index: 999; }
+        #wrong-x {
+            color: #c62828;
+            font-size: 60px;
+            font-weight: bold;
+            display: none;
+            position: absolute;
+            left: 50%;
+            top: 30%;
+            transform: translate(-50%, -50%);
+            z-index: 1000;
+            text-shadow: 2px 2px 8px #fff;
+        }
+        .back-btn {
+            margin: 20px;
+            padding: 10px 20px;
+            background: #284721;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
-    <button onclick="window.location.href='index.html'" style="margin: 20px; padding: 10px 20px; background: #284721; color: #fff; border: none; border-radius: 5px; font-size: 16px; cursor: pointer;">
+    <button class="back-btn" onclick="window.location.href='index.html'">
         Voltar para o site principal
     </button>
+    <canvas id="confetti-canvas"></canvas>
+    <div id="wrong-x">✗</div>
     <div id="game">
         <div id="dino">🦖</div>
         <div id="question"></div>
@@ -24,6 +49,70 @@
         <div id="result"></div>
     </div>
     <script>
+        // Confetti effect
+        function confettiBurst() {
+            const canvas = document.getElementById('confetti-canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            let confetti = [];
+            for (let i = 0; i < 120; i++) {
+                confetti.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * -canvas.height,
+                    r: Math.random() * 6 + 4,
+                    d: Math.random() * 80 + 40,
+                    color: `hsl(${Math.random()*360},90%,60%)`,
+                    tilt: Math.random() * 10 - 10
+                });
+            }
+            let angle = 0;
+            let frame = 0;
+            function draw() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                for (let i = 0; i < confetti.length; i++) {
+                    let c = confetti[i];
+                    ctx.beginPath();
+                    ctx.arc(c.x, c.y, c.r, 0, Math.PI * 2, false);
+                    ctx.fillStyle = c.color;
+                    ctx.fill();
+                }
+                update();
+            }
+            function update() {
+                angle += 0.01;
+                for (let i = 0; i < confetti.length; i++) {
+                    let c = confetti[i];
+                    c.y += (Math.cos(angle + c.d) + 2 + c.r / 2) * 0.8;
+                    c.x += Math.sin(angle) * 2;
+                    if (c.y > canvas.height) {
+                        c.x = Math.random() * canvas.width;
+                        c.y = Math.random() * -20;
+                    }
+                }
+            }
+            function animate() {
+                draw();
+                frame++;
+                if (frame < 60) {
+                    requestAnimationFrame(animate);
+                } else {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                }
+            }
+            animate();
+        }
+
+        // X effect
+        function showWrongX() {
+            const x = document.getElementById('wrong-x');
+            x.style.display = 'block';
+            setTimeout(() => {
+                x.style.display = 'none';
+            }, 800);
+        }
+
+        // Perguntas do jogo
         const questions = [
             {
                 q: "Qual é a molécula responsável pelo armazenamento genético?",
@@ -61,14 +150,16 @@
                     if (i === q.a) {
                         score++;
                         document.getElementById('result').textContent = "Correto!";
+                        confettiBurst();
                     } else {
                         document.getElementById('result').textContent = "Errado!";
+                        showWrongX();
                     }
                     current++;
                     setTimeout(() => {
                         document.getElementById('result').textContent = "";
                         showQuestion();
-                    }, 1000);
+                    }, 1200);
                 };
                 document.getElementById('options').appendChild(btn);
             });
