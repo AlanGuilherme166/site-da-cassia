@@ -37,7 +37,10 @@
             text-decoration: underline;
         }
         body {
-            background-color: ghostwhite;
+            background: #181818;
+            color: #e0e0e0;
+            font-family: Arial, sans-serif;
+            text-align: center;
         }
         .sidebar {
             position:fixed;
@@ -59,14 +62,14 @@
             padding: 0;
         }
         .sidebar ul li {
-            color: azure;
+            color: #e0e0e0;
             padding: 15px;
             text-align: center;
             transition: background-color 0.3s ease;
             opacity: 1; /* Corrigido para sempre visível */
         }
         .sidebar ul li:hover {
-            background-color: #3a3a3a;
+            background-color: #232323;
             cursor: pointer;
         }
         .sidebar ul li span {
@@ -80,6 +83,26 @@
         .content {
             margin-left: 70px;
             padding: 20px;
+        }
+        #main-content, #game {
+            background: #232323;
+            color: #e0e0e0;
+            border-radius: 10px;
+            box-shadow: 0 0 10px #000;
+        }
+        button, .option {
+            background: #222;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+        }
+        button:hover, .option:hover {
+            background: #333;
+        }
+        input[type="text"] {
+            background: #181818;
+            color: #fff;
+            border: 1px solid #333;
         }
         h1 {
             text-align: left;

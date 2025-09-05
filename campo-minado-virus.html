@@ -4,18 +4,25 @@
     <meta charset="UTF-8">
     <title>Campo Minado Vírus</title>
     <style>
-        body { background: #f4f4f4; font-family: Arial, sans-serif; text-align: center; }
-        .sidebar {
-            position: fixed; top: 0; left: 0; height: 100%; width: 60px;
-            background-color: #121210; transition: width 0.3s; padding-top: 20px; z-index: 1001; overflow-x: hidden;
-        }
+        body { background: #181818; color: #e0e0e0; font-family: Arial, sans-serif; text-align: center; }
+        .sidebar { position: fixed; top: 0; left: 0; height: 100%; width: 60px; background-color: #121210; transition: width 0.3s; padding-top: 20px; z-index: 1001; overflow-x: hidden; }
         .sidebar:hover { width: 200px; }
         .sidebar ul { list-style: none; padding: 0; }
-        .sidebar ul li { color: azure; padding: 15px; text-align: center; transition: background-color 0.3s; opacity: 1; cursor: pointer; }
-        .sidebar ul li:hover { background-color: #3a3a3a; }
+        .sidebar ul li { color: #e0e0e0; padding: 15px; text-align: center; transition: background-color 0.3s; opacity: 1; cursor: pointer; }
+        .sidebar ul li:hover { background-color: #232323; }
         .sidebar ul li span { opacity: 0; transition: opacity 0.3s; white-space: nowrap; margin-left: 10px; }
         .sidebar:hover ul li span { opacity: 1; }
         #main-content { margin-left: 70px; padding: 20px; }
+        #minesweeper { display: inline-block; margin-top: 30px; }
+        .row { display: flex; }
+        .cell {
+            width: 32px; height: 32px; background: #232323; border: 1px solid #333;
+            color: #fff; font-size: 18px; text-align: center; line-height: 32px; cursor: pointer; user-select: none;
+        }
+        .cell.revealed { background: #181818; cursor: default; }
+        .cell.virus { background: #b71c1c; }
+        .cell.flag { background: #333; color: #ffeb3b; }
+        #status { margin-top: 20px; font-size: 18px; }
     </style>
 </head>
 <body>
@@ -29,7 +36,110 @@
     </div>
     <div id="main-content">
         <h1>Campo Minado Vírus</h1>
-        <p>Jogo em construção...</p>
+        <div id="minesweeper"></div>
+        <div id="status"></div>
     </div>
+    <script>
+        const rows = 9, cols = 9, viruses = 10;
+        let board = [], revealed = [], flagged = [], gameOver = false, cellsRevealed = 0;
+
+        function init() {
+            board = Array.from({length: rows}, () => Array(cols).fill(0));
+            revealed = Array.from({length: rows}, () => Array(cols).fill(false));
+            flagged = Array.from({length: rows}, () => Array(cols).fill(false));
+            gameOver = false;
+            cellsRevealed = 0;
+            // Coloca vírus
+            let placed = 0;
+            while (placed < viruses) {
+                let r = Math.floor(Math.random() * rows);
+                let c = Math.floor(Math.random() * cols);
+                if (board[r][c] === 0) {
+                    board[r][c] = 'V';
+                    placed++;
+                }
+            }
+            // Números ao redor
+            for (let r = 0; r < rows; r++) {
+                for (let c = 0; c < cols; c++) {
+                    if (board[r][c] === 'V') continue;
+                    let count = 0;
+                    for (let dr = -1; dr <= 1; dr++) {
+                        for (let dc = -1; dc <= 1; dc++) {
+                            let nr = r + dr, nc = c + dc;
+                            if (nr >= 0 && nr < rows && nc >= 0 && nc < cols && board[nr][nc] === 'V') count++;
+                        }
+                    }
+                    board[r][c] = count;
+                }
+            }
+            render();
+        }
+
+        function render() {
+            const container = document.getElementById('minesweeper');
+            container.innerHTML = '';
+            for (let r = 0; r < rows; r++) {
+                const rowDiv = document.createElement('div');
+                rowDiv.className = 'row';
+                for (let c = 0; c < cols; c++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'cell';
+                    if (revealed[r][c]) {
+                        cell.classList.add('revealed');
+                        if (board[r][c] === 'V') {
+                            cell.classList.add('virus');
+                            cell.textContent = '🦠';
+                        } else if (board[r][c] > 0) {
+                            cell.textContent = board[r][c];
+                        }
+                    } else if (flagged[r][c]) {
+                        cell.classList.add('flag');
+                        cell.textContent = '🚩';
+                    }
+                    cell.oncontextmenu = e => { e.preventDefault(); flagCell(r, c); };
+                    cell.onclick = () => revealCell(r, c);
+                    rowDiv.appendChild(cell);
+                }
+                container.appendChild(rowDiv);
+            }
+        }
+
+        function revealCell(r, c) {
+            if (gameOver || revealed[r][c] || flagged[r][c]) return;
+            revealed[r][c] = true;
+            cellsRevealed++;
+            if (board[r][c] === 'V') {
+                gameOver = true;
+                document.getElementById('status').textContent = 'Você perdeu! Era um vírus!';
+                // Revela tudo
+                for (let i = 0; i < rows; i++) for (let j = 0; j < cols; j++) revealed[i][j] = true;
+                render();
+                return;
+            }
+            if (board[r][c] === 0) {
+                // Revela vizinhos
+                for (let dr = -1; dr <= 1; dr++) {
+                    for (let dc = -1; dc <= 1; dc++) {
+                        let nr = r + dr, nc = c + dc;
+                        if (nr >= 0 && nr < rows && nc >= 0 && nc < cols) revealCell(nr, nc);
+                    }
+                }
+            }
+            render();
+            if (cellsRevealed === rows * cols - viruses) {
+                gameOver = true;
+                document.getElementById('status').textContent = 'Parabéns! Você venceu!';
+            }
+        }
+
+        function flagCell(r, c) {
+            if (gameOver || revealed[r][c]) return;
+            flagged[r][c] = !flagged[r][c];
+            render();
+        }
+
+        init();
+    </script>
 </body>
 </html>

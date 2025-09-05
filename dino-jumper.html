@@ -4,18 +4,19 @@
     <meta charset="UTF-8">
     <title>Bactéria Jumper</title>
     <style>
-        body { background: #f4f4f4; font-family: Arial, sans-serif; text-align: center; }
-        .sidebar {
-            position: fixed; top: 0; left: 0; height: 100%; width: 60px;
-            background-color: #121210; transition: width 0.3s; padding-top: 20px; z-index: 1001; overflow-x: hidden;
-        }
+        body { background: #181818; color: #e0e0e0; font-family: Arial, sans-serif; text-align: center; }
+        .sidebar { position: fixed; top: 0; left: 0; height: 100%; width: 60px; background-color: #121210; transition: width 0.3s; padding-top: 20px; z-index: 1001; overflow-x: hidden; }
         .sidebar:hover { width: 200px; }
         .sidebar ul { list-style: none; padding: 0; }
-        .sidebar ul li { color: azure; padding: 15px; text-align: center; transition: background-color 0.3s; opacity: 1; cursor: pointer; }
-        .sidebar ul li:hover { background-color: #3a3a3a; }
+        .sidebar ul li { color: #e0e0e0; padding: 15px; text-align: center; transition: background-color 0.3s; opacity: 1; cursor: pointer; }
+        .sidebar ul li:hover { background-color: #232323; }
         .sidebar ul li span { opacity: 0; transition: opacity 0.3s; white-space: nowrap; margin-left: 10px; }
         .sidebar:hover ul li span { opacity: 1; }
         #main-content { margin-left: 70px; padding: 20px; }
+        #game-area { background: #232323; margin: 40px auto; width: 400px; height: 200px; border-radius: 10px; box-shadow: 0 0 10px #000; position: relative; overflow: hidden; }
+        #bacteria { position: absolute; left: 40px; bottom: 20px; font-size: 40px; }
+        #obstacle { position: absolute; right: 0; bottom: 20px; width: 30px; height: 40px; background: #b71c1c; border-radius: 8px; }
+        #score { margin-top: 20px; }
     </style>
 </head>
 <body>
@@ -29,7 +30,72 @@
     </div>
     <div id="main-content">
         <h1>Bactéria Jumper</h1>
-        <p>Jogo em construção...</p>
+        <div id="game-area">
+            <div id="bacteria">🦠</div>
+            <div id="obstacle"></div>
+        </div>
+        <div id="score">Pontuação: <span id="score-value">0</span></div>
+        <p>Pressione <b>espaço</b> para pular!</p>
     </div>
+    <script>
+        const bacteria = document.getElementById('bacteria');
+        const obstacle = document.getElementById('obstacle');
+        const scoreValue = document.getElementById('score-value');
+        let jumping = false, score = 0, gameOver = false;
+
+        function jump() {
+            if (jumping || gameOver) return;
+            jumping = true;
+            let up = 0;
+            const jumpInterval = setInterval(() => {
+                if (up < 60) {
+                    bacteria.style.bottom = (20 + up) + 'px';
+                    up += 4;
+                } else {
+                    clearInterval(jumpInterval);
+                    let down = up;
+                    const fallInterval = setInterval(() => {
+                        if (down > 0) {
+                            bacteria.style.bottom = (20 + down) + 'px';
+                            down -= 4;
+                        } else {
+                            clearInterval(fallInterval);
+                            bacteria.style.bottom = '20px';
+                            jumping = false;
+                        }
+                    }, 10);
+                }
+            }, 10);
+        }
+
+        document.body.onkeydown = function(e) {
+            if (e.code === 'Space') jump();
+        };
+
+        function moveObstacle() {
+            let pos = 400;
+            obstacle.style.right = '0px';
+            function frame() {
+                if (gameOver) return;
+                pos -= 4;
+                obstacle.style.right = (400 - pos) + 'px';
+                // Colisão
+                let bacteriaBottom = parseInt(bacteria.style.bottom);
+                if (pos < 70 && pos > 40 && bacteriaBottom < 60) {
+                    gameOver = true;
+                    alert('Game Over! Pontuação: ' + score);
+                    window.location.reload();
+                }
+                if (pos <= 0) {
+                    score++;
+                    scoreValue.textContent = score;
+                    pos = 400 + Math.random() * 100;
+                }
+                requestAnimationFrame(frame);
+            }
+            frame();
+        }
+        moveObstacle();
+    </script>
 </body>
 </html>
