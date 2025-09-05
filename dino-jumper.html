@@ -44,16 +44,16 @@
         let jumping = false, score = 0, gameOver = false;
         let bacteriaBottom = 20;
         let velocity = 0;
-        let gravity = -1.2; // Gravidade mais forte
+        let gravity = -1.2;
         let isOnGround = true;
 
-        // Aumenta a velocidade inicial do obstáculo
-        let obstacleSpeed = 4.5; // valor aumentado
+        // Deixa o obstáculo um pouco mais rápido
+        let obstacleSpeed = 5.5; // valor aumentado
 
         function jump() {
             if (jumping || !isOnGround || gameOver) return;
             jumping = true;
-            velocity = 13; // Pulo mais alto
+            velocity = 13;
             isOnGround = false;
         }
 
@@ -61,7 +61,6 @@
             if (e.code === 'Space') jump();
         };
 
-        // Movimento do obstáculo
         let obstaclePos = 400;
         function moveObstacle() {
             if (gameOver) return;
@@ -76,10 +75,8 @@
             obstacle.style.right = (400 - obstaclePos) + 'px';
         }
 
-        // Loop do jogo
         function gameLoop() {
             if (gameOver) return;
-            // Gravidade e pulo
             if (!isOnGround) {
                 bacteriaBottom += velocity;
                 velocity += gravity;
@@ -92,11 +89,10 @@
                 bacteria.style.bottom = bacteriaBottom + 'px';
             }
             moveObstacle();
-            // Colisão mais justa
             let obsLeft = obstaclePos;
             if (
                 obsLeft < 70 && obsLeft > 40 &&
-                bacteriaBottom < 50 // Ajuste para colisão mais justa
+                bacteriaBottom < 50
             ) {
                 gameOver = true;
                 setTimeout(() => {
@@ -107,10 +103,9 @@
             requestAnimationFrame(gameLoop);
         }
 
-        // Inicialização
         function resetGame() {
             obstaclePos = 400;
-            obstacleSpeed = 4.5; // valor aumentado
+            obstacleSpeed = 5.5; // valor aumentado
             score = 0;
             scoreValue.textContent = score;
             bacteriaBottom = 20;
