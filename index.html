@@ -50,6 +50,7 @@
             transition: width 0.3s ease;
             padding-top: 20px;
             z-index: 10;
+            overflow-x: hidden;
         }
         .sidebar:hover {
             width: 200px;
@@ -68,6 +69,14 @@
         .sidebar ul li:hover {
             background-color: #3a3a3a;
             cursor: pointer;
+        }
+        .sidebar ul li span {
+            opacity: 0;
+            transition: opacity 0.3s;
+            white-space: nowrap;
+        }
+        .sidebar:hover ul li span {
+            opacity: 1;
         }
         .content {
             margin-left: 70px;
@@ -96,9 +105,9 @@
         </header>
         <div class="sidebar">
             <ul>
-                <li>planilhas</li>
-                <li>calculadoras</li>
-                <li>biologia</li>
+                <li><span>planilhas</span></li>
+                <li><span>calculadoras</span></li>
+                <li><span>biologia</span></li>
             </ul>
         </div>
         <div class="content">
