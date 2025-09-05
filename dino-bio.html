@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Dino Bio - Jogo de Biologia</title>
+    <style>
+        body { background: #f4f4f4; font-family: Arial, sans-serif; text-align: center; }
+        #game { margin: 40px auto; width: 400px; background: #fff; border-radius: 10px; box-shadow: 0 0 10px #ccc; padding: 30px; }
+        #dino { font-size: 60px; }
+        #question { margin: 20px 0; font-size: 20px; }
+        .option { display: block; margin: 10px auto; padding: 10px 20px; border: none; border-radius: 5px; background: #2e7d32; color: #fff; cursor: pointer; font-size: 16px; }
+        .option:hover { background: #388e3c; }
+        #result { margin-top: 20px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div id="game">
+        <div id="dino">🦖</div>
+        <div id="question"></div>
+        <div id="options"></div>
+        <div id="result"></div>
+    </div>
+    <script>
+        const questions = [
+            {
+                q: "Qual é a molécula responsável pelo armazenamento genético?",
+                o: ["DNA", "Proteína", "Lipídio", "Carboidrato"],
+                a: 0
+            },
+            {
+                q: "Qual desses é um órgão exclusivo de plantas?",
+                o: ["Cloroplasto", "Mitocôndria", "Ribossomo", "Lisossomo"],
+                a: 0
+            },
+            {
+                q: "Qual reino pertence a bactéria?",
+                o: ["Fungi", "Animalia", "Monera", "Protista"],
+                a: 2
+            }
+        ];
+        let current = 0, score = 0;
+
+        function showQuestion() {
+            if (current >= questions.length) {
+                document.getElementById('question').textContent = "Fim de jogo!";
+                document.getElementById('options').innerHTML = "";
+                document.getElementById('result').textContent = `Pontuação: ${score}/${questions.length}`;
+                return;
+            }
+            const q = questions[current];
+            document.getElementById('question').textContent = q.q;
+            document.getElementById('options').innerHTML = "";
+            q.o.forEach((opt, i) => {
+                const btn = document.createElement('button');
+                btn.textContent = opt;
+                btn.className = "option";
+                btn.onclick = () => {
+                    if (i === q.a) {
+                        score++;
+                        document.getElementById('result').textContent = "Correto!";
+                    } else {
+                        document.getElementById('result').textContent = "Errado!";
+                    }
+                    current++;
+                    setTimeout(() => {
+                        document.getElementById('result').textContent = "";
+                        showQuestion();
+                    }, 1000);
+                };
+                document.getElementById('options').appendChild(btn);
+            });
+        }
+        showQuestion();
+    </script>
+</body>
+</html>
