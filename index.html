@@ -18,9 +18,9 @@
             transition: margin-left 0.3s ease;
             font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', sans-serif;
         }
-        .sidebar:hover~ .content
-        header {
-            margin-left: 180px
+        .sidebar:hover ~ .content,
+        .sidebar:hover ~ header {
+            margin-left: 180px;
         }
         nav ul {
             list-style: none;
@@ -49,11 +49,11 @@
             background-color: #121210;
             transition: width 0.3s ease;
             padding-top: 20px;
+            z-index: 10;
         }
-        sidebar
         .sidebar:hover {
             width: 200px;
-                }
+        }
         .sidebar ul {
             list-style: none;
             padding: 0;
@@ -63,16 +63,16 @@
             padding: 15px;
             text-align: center;
             transition: background-color 0.3s ease;
-            opacity: 0;
+            opacity: 1; /* Corrigido para sempre visível */
         }
         .sidebar ul li:hover {
             background-color: #3a3a3a;
             cursor: pointer;
-            opacity: 1;
         }
         .content {
             margin-left: 70px;
             padding: 20px;
+            transition: margin-left 0.3s ease;
         }
         h1 {
             text-align: left;
