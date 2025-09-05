@@ -47,8 +47,8 @@
         let gravity = -1.2; // Gravidade mais forte
         let isOnGround = true;
 
-        // Ajuste de velocidade do obstáculo
-        let obstacleSpeed = 2.5;
+        // Aumenta a velocidade inicial do obstáculo
+        let obstacleSpeed = 4.5; // valor aumentado
 
         function jump() {
             if (jumping || !isOnGround || gameOver) return;
@@ -71,7 +71,7 @@
                 score++;
                 scoreValue.textContent = score;
                 // Aumenta a velocidade a cada 5 pontos
-                if (score % 5 === 0 && obstacleSpeed < 6) obstacleSpeed += 0.3;
+                if (score % 5 === 0 && obstacleSpeed < 8) obstacleSpeed += 0.4;
             }
             obstacle.style.right = (400 - obstaclePos) + 'px';
         }
@@ -110,7 +110,7 @@
         // Inicialização
         function resetGame() {
             obstaclePos = 400;
-            obstacleSpeed = 2.5;
+            obstacleSpeed = 4.5; // valor aumentado
             score = 0;
             scoreValue.textContent = score;
             bacteriaBottom = 20;
