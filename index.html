@@ -104,7 +104,7 @@
         <div class="sidebar">
             <ul>
                 <li><span>Planilhas</span></li>
-                <li><span>Calculadoras</span></li>
+                <li id="calc-btn" style="cursor:pointer;"><span>Calculadoras</span></li>
                 <li><span>Biologia</span></li>
             </ul>
         </div>
@@ -116,6 +116,67 @@
         <script>
             document.getElementById('logo-biomundo').onclick = function() {
                 window.location.href = 'dino-bio.html';
+            };
+
+            // Função para abrir uma calculadora simples em um popup
+            document.getElementById('calc-btn').onclick = function() {
+                // Cria um popup com uma calculadora simples
+                const calcWindow = window.open('', 'Calculadora', 'width=320,height=480');
+                calcWindow.document.write(`
+                    <html>
+                    <head>
+                        <title>Calculadora</title>
+                        <style>
+                            body { font-family: Arial; background: #f4f4f4; text-align: center; }
+                            #calc { margin: 40px auto; width: 250px; background: #fff; border-radius: 10px; box-shadow: 0 0 10px #ccc; padding: 20px; }
+                            input[type="text"] { width: 220px; font-size: 22px; margin-bottom: 10px; padding: 5px; text-align: right; }
+                            button { width: 50px; height: 50px; font-size: 20px; margin: 3px; border-radius: 5px; border: none; background: #2e7d32; color: #fff; cursor: pointer; }
+                            button:hover { background: #388e3c; }
+                        </style>
+                    </head>
+                    <body>
+                        <div id="calc">
+                            <input type="text" id="display" disabled><br>
+                            <div>
+                                <button onclick="add('7')">7</button>
+                                <button onclick="add('8')">8</button>
+                                <button onclick="add('9')">9</button>
+                                <button onclick="add('/')">÷</button>
+                            </div>
+                            <div>
+                                <button onclick="add('4')">4</button>
+                                <button onclick="add('5')">5</button>
+                                <button onclick="add('6')">6</button>
+                                <button onclick="add('*')">×</button>
+                            </div>
+                            <div>
+                                <button onclick="add('1')">1</button>
+                                <button onclick="add('2')">2</button>
+                                <button onclick="add('3')">3</button>
+                                <button onclick="add('-')">-</button>
+                            </div>
+                            <div>
+                                <button onclick="add('0')">0</button>
+                                <button onclick="add('.')">.</button>
+                                <button onclick="calculate()">=</button>
+                                <button onclick="add('+')">+</button>
+                            </div>
+                            <div>
+                                <button onclick="clearDisplay()" style="width: 220px; background: #c62828;">C</button>
+                            </div>
+                        </div>
+                        <script>
+                            let display = document.getElementById('display');
+                            function add(val) { display.value += val; }
+                            function calculate() {
+                                try { display.value = eval(display.value); }
+                                catch { display.value = 'Erro'; }
+                            }
+                            function clearDisplay() { display.value = ''; }
+                        <\/script>
+                    </body>
+                    </html>
+                `);
             };
         </script>
     </body>
