@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Jogo da Velha Bio</title>
+    <style>
+        body { background: #181818; color: #e0e0e0; font-family: Arial, sans-serif; text-align: center; }
+        .sidebar { position: fixed; top: 0; left: 0; height: 100%; width: 60px; background-color: #121210; transition: width 0.3s; padding-top: 20px; z-index: 1001; overflow-x: hidden; }
+        .sidebar:hover { width: 200px; }
+        .sidebar ul { list-style: none; padding: 0; }
+        .sidebar ul li { color: #e0e0e0; padding: 15px; text-align: center; transition: background-color 0.3s; opacity: 1; cursor: pointer; }
+        .sidebar ul li:hover { background-color: #232323; }
+        .sidebar ul li span { opacity: 0; transition: opacity 0.3s; white-space: nowrap; margin-left: 10px; }
+        .sidebar:hover ul li span { opacity: 1; }
+        #main-content { margin-left: 70px; padding: 20px; }
+        #board { display: grid; grid-template-columns: repeat(3, 80px); grid-template-rows: repeat(3, 80px); gap: 8px; justify-content: center; margin: 40px auto; }
+        .cell {
+            width: 80px; height: 80px; background: #232323; border-radius: 10px; font-size: 48px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background 0.2s;
+        }
+        .cell:hover { background: #333; }
+        #status { margin-top: 20px; font-size: 20px; }
+        .reset-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: #284721;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .reset-btn:hover { background: #388e3c; }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <ul>
+            <li onclick="window.location.href='dino-bio.html'">🦖<span>Quiz Biologia</span></li>
+            <li onclick="window.location.href='dino-jumper.html'">🦠<span>Bactéria Jumper</span></li>
+            <li onclick="window.location.href='campo-minado-virus.html'">🦠<span>Campo Minado Vírus</span></li>
+            <li onclick="window.location.href='jogo-da-velha.html'">🦠🦠<span>Jogo da Velha Bio</span></li>
+            <li onclick="window.location.href='index.html'">🏠<span>Voltar ao Site</span></li>
+        </ul>
+    </div>
+    <div id="main-content">
+        <h1>Jogo da Velha Bio</h1>
+        <div id="status">Vez da <span id="vez">Bactéria 🦠</span></div>
+        <div id="board"></div>
+        <button class="reset-btn" onclick="resetGame()">Reiniciar</button>
+    </div>
+    <script>
+        const boardDiv = document.getElementById('board');
+        const statusDiv = document.getElementById('status');
+        const vezSpan = document.getElementById('vez');
+        let board = Array(9).fill(null);
+        let bacteriaTurn = true;
+        let gameOver = false;
+
+        function render() {
+            boardDiv.innerHTML = '';
+            board.forEach((cell, i) => {
+                const div = document.createElement('div');
+                div.className = 'cell';
+                div.textContent = cell === 'bacteria' ? '🦠' : cell === 'virus' ? '🦠' : '';
+                if (cell === 'virus') div.style.filter = 'hue-rotate(120deg)';
+                div.onclick = () => handleClick(i);
+                boardDiv.appendChild(div);
+            });
+            vezSpan.textContent = bacteriaTurn ? 'Bactéria 🦠' : 'Vírus 🦠';
+            vezSpan.style.filter = bacteriaTurn ? 'none' : 'hue-rotate(120deg)';
+        }
+
+        function handleClick(i) {
+            if (gameOver || board[i]) return;
+            board[i] = bacteriaTurn ? 'bacteria' : 'virus';
+            bacteriaTurn = !bacteriaTurn;
+            checkWinner();
+            render();
+        }
+
+        function checkWinner() {
+            const wins = [
+                [0,1,2],[3,4,5],[6,7,8],
+                [0,3,6],[1,4,7],[2,5,8],
+                [0,4,8],[2,4,6]
+            ];
+            for (const [a,b,c] of wins) {
+                if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+                    gameOver = true;
+                    statusDiv.innerHTML = (board[a] === 'bacteria' ? 'Bactéria 🦠' : 'Vírus 🦠') + ' venceu!';
+                    return;
+                }
+            }
+            if (board.every(cell => cell)) {
+                gameOver = true;
+                statusDiv.textContent = 'Empate!';
+            }
+        }
+
+        function resetGame() {
+            board = Array(9).fill(null);
+            bacteriaTurn = true;
+            gameOver = false;
+            statusDiv.innerHTML = 'Vez da <span id="vez">Bactéria 🦠</span>';
+            render();
+        }
+
+        render();
+    </script>
+</body>
+</html>

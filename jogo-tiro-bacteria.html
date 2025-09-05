@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Bactéria Atiradora</title>
+    <style>
+        body { background: #181818; color: #e0e0e0; font-family: Arial, sans-serif; text-align: center; }
+        .sidebar { position: fixed; top: 0; left: 0; height: 100%; width: 60px; background-color: #121210; transition: width 0.3s; padding-top: 20px; z-index: 1001; overflow-x: hidden; }
+        .sidebar:hover { width: 200px; }
+        .sidebar ul { list-style: none; padding: 0; }
+        .sidebar ul li { color: #e0e0e0; padding: 15px; text-align: center; transition: background-color 0.3s; opacity: 1; cursor: pointer; }
+        .sidebar ul li:hover { background-color: #232323; }
+        .sidebar ul li span { opacity: 0; transition: opacity 0.3s; white-space: nowrap; margin-left: 10px; }
+        .sidebar:hover ul li span { opacity: 1; }
+        #main-content { margin-left: 70px; padding: 20px; }
+        #game-area {
+            background: #232323;
+            margin: 40px auto;
+            width: 500px;
+            height: 300px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px #000;
+            position: relative;
+            overflow: hidden;
+        }
+        #score { margin-top: 20px; }
+        .reset-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: #284721;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .reset-btn:hover { background: #388e3c; }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <ul>
+            <li onclick="window.location.href='dino-bio.html'">🦖<span>Quiz Biologia</span></li>
+            <li onclick="window.location.href='dino-jumper.html'">🦠<span>Bactéria Jumper</span></li>
+            <li onclick="window.location.href='campo-minado-virus.html'">🦠<span>Campo Minado Vírus</span></li>
+            <li onclick="window.location.href='jogo-da-velha.html'">🦠🦠<span>Jogo da Velha Bio</span></li>
+            <li onclick="window.location.href='jogo-tiro-bacteria.html'">🧫<span>Bactéria Atiradora</span></li>
+            <li onclick="window.location.href='index.html'">🏠<span>Voltar ao Site</span></li>
+        </ul>
+    </div>
+    <div id="main-content">
+        <h1>Bactéria Atiradora</h1>
+        <div id="game-area">
+            <canvas id="game-canvas" width="500" height="300"></canvas>
+        </div>
+        <div id="score">Pontuação: <span id="score-value">0</span></div>
+        <button class="reset-btn" onclick="resetGame()">Reiniciar</button>
+        <p>Use as setas para mover a bactéria (verde) e espaço para atirar nos vírus (vermelho)!</p>
+    </div>
+    <script>
+        const canvas = document.getElementById('game-canvas');
+        const ctx = canvas.getContext('2d');
+        const scoreValue = document.getElementById('score-value');
+        let bacteria, bullets, viruses, score, gameOver, keys;
+
+        function resetGame() {
+            bacteria = { x: 40, y: 130, w: 30, h: 30, color: "#7ee87e" };
+            bullets = [];
+            viruses = [];
+            score = 0;
+            gameOver = false;
+            keys = {};
+            scoreValue.textContent = score;
+            spawnVirus();
+            animate();
+        }
+
+        function spawnVirus() {
+            if (gameOver) return;
+            const y = Math.random() * (canvas.height - 30);
+            viruses.push({ x: canvas.width - 30, y, w: 30, h: 30, color: "#e74c3c", speed: 2 + Math.random() * 1.5 });
+            setTimeout(spawnVirus, 1200 - Math.min(score * 10, 800));
+        }
+
+        function animate() {
+            if (gameOver) return;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Move bactéria
+            if (keys['ArrowUp'] && bacteria.y > 0) bacteria.y -= 3;
+            if (keys['ArrowDown'] && bacteria.y < canvas.height - bacteria.h) bacteria.y += 3;
+
+            // Desenha bactéria (verde)
+            ctx.fillStyle = bacteria.color;
+            ctx.beginPath();
+            ctx.ellipse(bacteria.x + 15, bacteria.y + 15, 15, 15, 0, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.strokeStyle = "#284721";
+            ctx.stroke();
+
+            // Desenha bullets
+            ctx.fillStyle = "#fff";
+            bullets.forEach((b, i) => {
+                b.x += 5;
+                ctx.fillRect(b.x, b.y, 8, 3);
+                // Remove se sair da tela
+                if (b.x > canvas.width) bullets.splice(i, 1);
+            });
+
+            // Desenha vírus (vermelho)
+            viruses.forEach((v, vi) => {
+                v.x -= v.speed;
+                ctx.fillStyle = v.color;
+                ctx.beginPath();
+                ctx.ellipse(v.x + 15, v.y + 15, 15, 15, 0, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.strokeStyle = "#b71c1c";
+                ctx.stroke();
+
+                // Colisão com bactéria
+                if (
+                    v.x < bacteria.x + bacteria.w &&
+                    v.x + v.w > bacteria.x &&
+                    v.y < bacteria.y + bacteria.h &&
+                    v.y + v.h > bacteria.y
+                ) {
+                    gameOver = true;
+                    ctx.font = "32px Arial";
+                    ctx.fillStyle = "#fff";
+                    ctx.fillText("Game Over!", 170, 150);
+                    return;
+                }
+
+                // Colisão com tiro
+                bullets.forEach((b, bi) => {
+                    if (
+                        b.x < v.x + v.w &&
+                        b.x + 8 > v.x &&
+                        b.y < v.y + v.h &&
+                        b.y + 3 > v.y
+                    ) {
+                        viruses.splice(vi, 1);
+                        bullets.splice(bi, 1);
+                        score++;
+                        scoreValue.textContent = score;
+                    }
+                });
+            });
+
+            // Remove vírus fora da tela
+            viruses = viruses.filter(v => v.x + v.w > 0);
+
+            if (!gameOver) requestAnimationFrame(animate);
+        }
+
+        document.addEventListener('keydown', function(e) {
+            keys[e.key] = true;
+            if (e.key === ' ' && !gameOver) {
+                // Atira
+                bullets.push({ x: bacteria.x + bacteria.w, y: bacteria.y + bacteria.h / 2 - 1, w: 8, h: 3 });
+            }
+        });
+        document.addEventListener('keyup', function(e) {
+            keys[e.key] = false;
+        });
+
+        resetGame();
+    </script>
+</body>
+</html>
