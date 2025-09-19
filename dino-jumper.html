@@ -32,14 +32,14 @@
         <h1>Bactéria Jumper</h1>
         <div id="game-area">
             <div id="bacteria">🦠</div>
-            <div id="obstacle"></div>
+            <div id="obstacle" style="position: absolute; right: 0; bottom: 20px; width: 40px; height: 40px; font-size: 38px;">💉</div>
         </div>
         <div id="score">Pontuação: <span id="score-value">0</span></div>
         <p>Pressione <b>espaço</b> para pular!</p>
     </div>
     <script>
-        const bacteria = document.getElementById('bacteria');
-        const obstacle = document.getElementById('obstacle');
+    const bacteria = document.getElementById('bacteria');
+    const obstacle = document.getElementById('obstacle');
         const scoreValue = document.getElementById('score-value');
         let jumping = false, score = 0, gameOver = false;
         let bacteriaBottom = 20;
@@ -89,10 +89,31 @@
                 bacteria.style.bottom = bacteriaBottom + 'px';
             }
             moveObstacle();
-            let obsLeft = obstaclePos;
+            // Colisão precisa usando bounding box
+            const bacteriaRect = bacteria.getBoundingClientRect();
+            const obstacleRect = obstacle.getBoundingClientRect();
+            // Ajusta para o game-area
+            const gameArea = document.getElementById('game-area');
+            const gameRect = gameArea.getBoundingClientRect();
+            // Corrige as posições relativas
+            const bacteriaBox = {
+                left: bacteriaRect.left - gameRect.left,
+                right: bacteriaRect.right - gameRect.left,
+                top: bacteriaRect.top - gameRect.top,
+                bottom: bacteriaRect.bottom - gameRect.top
+            };
+            const obstacleBox = {
+                left: obstacleRect.left - gameRect.left,
+                right: obstacleRect.right - gameRect.left,
+                top: obstacleRect.top - gameRect.top,
+                bottom: obstacleRect.bottom - gameRect.top
+            };
+            // Checa colisão
             if (
-                obsLeft < 70 && obsLeft > 40 &&
-                bacteriaBottom < 50
+                bacteriaBox.right > obstacleBox.left &&
+                bacteriaBox.left < obstacleBox.right &&
+                bacteriaBox.bottom > obstacleBox.top &&
+                bacteriaBox.top < obstacleBox.bottom
             ) {
                 gameOver = true;
                 setTimeout(() => {
