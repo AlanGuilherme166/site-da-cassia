@@ -354,27 +354,7 @@
     scene.add(person);
 
     // Inimigos (vírus vermelhos)
-    let enemies = [];
-    let wave = 1;
-    let enemiesToSpawn = 3;
-    let enemiesAlive = 0;
-    function spawnWave() {
-    showRoundOverlay();
-        for (let i = 0; i < enemiesToSpawn; i++) {
-            let angle = Math.random() * Math.PI * 2;
-            let radius = 13;
-            let x = Math.cos(angle) * radius;
-            let z = Math.sin(angle) * radius;
-            let enemyGeo = new THREE.SphereGeometry(1, 32, 32);
-            let enemyMat = new THREE.MeshPhongMaterial({ color: 0xc62828 });
-            let enemy = new THREE.Mesh(enemyGeo, enemyMat);
-            enemy.position.set(x, 1, z);
-            scene.add(enemy);
-            enemies.push(enemy);
-        }
-        enemiesAlive = enemiesToSpawn;
-    }
-    spawnWave();
+    // Removido bloco duplicado. Usar apenas a versão moderna de spawnWave e variáveis já declaradas acima.
 
     // Camera
     camera.position.set(0, 5, 18);
