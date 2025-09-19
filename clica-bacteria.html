@@ -31,39 +31,101 @@
     </style>
 </head>
 <body>
-    <div id="score">Pontuação: <span id="score-value">0</span></div>
-    <div id="game-area"></div>
+    <div id="score">Bactérias: <span id="score-value">0</span> | BPS: <span id="bps-value">0</span></div>
+    <div id="game-area">
+        <div id="bacteria">🦠</div>
+        <div id="upgrades">
+            <h2>Upgrades</h2>
+            <button id="buy-cultivo">Comprar Cultivo (+1 BPS) - 15 🦠</button>
+            <span id="cultivo-count">0</span> Cultivos<br>
+            <button id="buy-lab">Comprar Laboratório (+10 BPS) - 150 🦠</button>
+            <span id="lab-count">0</span> Laboratórios
+        </div>
+    </div>
+    <style>
+        #game-area { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; }
+        #bacteria {
+            position: static;
+            font-size: 120px;
+            margin: 40px 0 20px 0;
+            cursor: pointer;
+            transition: transform 0.1s;
+            user-select: none;
+        }
+        #bacteria:active { transform: scale(1.12); }
+        #upgrades {
+            background: #232323;
+            padding: 18px 32px;
+            border-radius: 16px;
+            box-shadow: 0 0 10px #000;
+            margin-top: 20px;
+            min-width: 260px;
+        }
+        #upgrades button {
+            margin: 8px 0;
+            padding: 8px 18px;
+            font-size: 1rem;
+            border-radius: 8px;
+            border: none;
+            background: #388e3c;
+            color: #fff;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        #upgrades button:disabled { background: #555; cursor: not-allowed; }
+        #upgrades span { font-weight: bold; margin: 0 8px; }
+    </style>
     <script>
-    const gameArea = document.getElementById('game-area');
-    const scoreValue = document.getElementById('score-value');
     let score = 0;
+    let bps = 0;
+    let cultivo = 0;
+    let lab = 0;
+    const scoreValue = document.getElementById('score-value');
+    const bpsValue = document.getElementById('bps-value');
+    const cultivoCount = document.getElementById('cultivo-count');
+    const labCount = document.getElementById('lab-count');
+    const buyCultivo = document.getElementById('buy-cultivo');
+    const buyLab = document.getElementById('buy-lab');
+    const bacteria = document.getElementById('bacteria');
 
-    function randomPosition() {
-        const w = window.innerWidth - 80;
-        const h = window.innerHeight - 80;
-        return {
-            x: Math.random() * w,
-            y: Math.random() * h
-        };
+    function updateUI() {
+        scoreValue.textContent = Math.floor(score);
+        bpsValue.textContent = bps;
+        cultivoCount.textContent = cultivo;
+        labCount.textContent = lab;
+        buyCultivo.disabled = score < 15;
+        buyLab.disabled = score < 150;
     }
 
-    function spawnBacteria() {
-        let bacteria = document.createElement('div');
-        bacteria.id = 'bacteria';
-        bacteria.innerText = '🦠';
-        let pos = randomPosition();
-        bacteria.style.left = pos.x + 'px';
-        bacteria.style.top = pos.y + 'px';
-        bacteria.onclick = function() {
-            score++;
-            scoreValue.textContent = score;
-            bacteria.remove();
-            spawnBacteria();
-        };
-        gameArea.appendChild(bacteria);
-    }
+    bacteria.onclick = function() {
+        score++;
+        updateUI();
+    };
 
-    spawnBacteria();
+    buyCultivo.onclick = function() {
+        if (score >= 15) {
+            score -= 15;
+            cultivo++;
+            bps += 1;
+            updateUI();
+        }
+    };
+
+    buyLab.onclick = function() {
+        if (score >= 150) {
+            score -= 150;
+            lab++;
+            bps += 10;
+            updateUI();
+        }
+    };
+
+    setInterval(() => {
+        score += bps / 10;
+        updateUI();
+    }, 100);
+
+    updateUI();
     </script>
 </body>
 </html>
