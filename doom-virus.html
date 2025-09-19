@@ -151,118 +151,6 @@
         "O vírus da gripe pode sobreviver em superfícies por até 48 horas.",
         "Existem bactérias que conseguem sobreviver em ambientes radioativos!"
     ];
-        // Buffs disponíveis
-        const buffs = [
-            {
-                name: 'Companion',
-                emoji: '🧫',
-                desc: 'Um companheiro atira junto com você!',
-                apply: function() { companionActive = true; }
-            },
-            {
-                name: 'Velocidade de Tiro',
-                emoji: '⚡',
-                desc: 'Reduz o tempo de recarga entre tiros.',
-                apply: function() { fireRate = Math.max(0.15, fireRate - 0.15); }
-            },
-            {
-                name: 'Seringa Gigante',
-                emoji: '💉',
-                desc: 'Seus tiros ficam maiores e mais fortes.',
-                apply: function() { bulletScale = 1.7; }
-            },
-            {
-                name: 'Vida Extra',
-                emoji: '❤️',
-                desc: 'Sobrevive a um ataque de vírus.',
-                apply: function() { extraLife = true; }
-            },
-            {
-                name: 'Tiro Triplo',
-                emoji: '🔱',
-                desc: 'Atira três seringas de uma vez.',
-                apply: function() { tripleShot = true; }
-            },
-            // Novos buffs temáticos
-            {
-                name: 'Recuperação',
-                emoji: '🩹',
-                desc: 'Cura gradual de PV a cada round.',
-                apply: function() { healingActive = true; }
-            },
-            {
-                name: 'Resistência Elemental',
-                emoji: '❄️',
-                desc: 'Absorve parte do dano elemental (fogo, gelo, eletricidade).',
-                apply: function() { elementalResist = true; }
-            },
-            {
-                name: 'Aumento de Dano',
-                emoji: '💥',
-                desc: 'Seus ataques causam mais dano.',
-                apply: function() { damageBuff = true; }
-            },
-            {
-                name: 'Melhoria de Defesa',
-                emoji: '🛡️',
-                desc: 'Reduz o dano recebido dos inimigos.',
-                apply: function() { defenseBuff = true; }
-            },
-            {
-                name: 'Aura',
-                emoji: '🌀',
-                desc: 'Recuperação gradual de PV durante a wave.',
-                apply: function() { auraActive = true; }
-            },
-            {
-                name: 'Elemenfagia',
-                emoji: '⚗️',
-                desc: 'Absorve dano elemental e converte em PV.',
-                apply: function() { elemenfagiaActive = true; }
-            },
-            {
-                name: 'Guarda',
-                emoji: '🛡️🤖',
-                desc: 'Ao morrer, invoca um aliado ou escudo.',
-                apply: function() { guardaActive = true; }
-            }
-        ];
-
-        // Variáveis dos novos buffs
-        let healingActive = false;
-        let elementalResist = false;
-        let damageBuff = false;
-        let defenseBuff = false;
-        let auraActive = false;
-        let elemenfagiaActive = false;
-        let guardaActive = false;
-        let fireRate = 0.5;
-        let lastShot = 0;
-        let bulletScale = 1;
-        let companionActive = false;
-        let extraLife = false;
-        let tripleShot = false;
-
-        // Exibir cartas de buff
-        function showBuffOverlay() {
-            const overlay = document.getElementById('buff-overlay');
-            const cardsDiv = document.getElementById('buff-cards');
-            cardsDiv.innerHTML = '';
-            // Sorteia 3 buffs diferentes
-            let options = buffs.slice().sort(() => 0.5 - Math.random()).slice(0,3);
-            options.forEach(buff => {
-                const card = document.createElement('div');
-                card.className = 'buff-card';
-                card.innerHTML = `<div class="buff-emoji">${buff.emoji}</div><div class="buff-name">${buff.name}</div><div class="buff-desc">${buff.desc}</div>`;
-                card.onclick = () => {
-                    buff.apply();
-                    overlay.style.display = 'none';
-                    setTimeout(() => { spawnWave(); }, 500);
-                };
-                cardsDiv.appendChild(card);
-            });
-            overlay.style.display = 'flex';
-        }
     const scaryTexts = [
         "Eles estão vindo...",
         "Você sente o cheiro da mutação?",
@@ -270,7 +158,51 @@
         "O medo se espalha como um vírus...",
         "Prepare-se para o desconhecido!"
     ];
+    // Buffs disponíveis
+    const buffs = [
+        { name: 'Companion', emoji: '🧫', desc: 'Um companheiro atira junto com você!', apply: function() { companionActive = true; } },
+        { name: 'Velocidade de Tiro', emoji: '⚡', desc: 'Reduz o tempo de recarga entre tiros.', apply: function() { fireRate = Math.max(0.15, fireRate - 0.15); } },
+        { name: 'Seringa Gigante', emoji: '💉', desc: 'Seus tiros ficam maiores e mais fortes.', apply: function() { bulletScale = 1.7; } },
+        { name: 'Vida Extra', emoji: '❤️', desc: 'Sobrevive a um ataque de vírus.', apply: function() { extraLife = true; } },
+        { name: 'Tiro Triplo', emoji: '🔱', desc: 'Atira três seringas de uma vez.', apply: function() { tripleShot = true; } },
+        { name: 'Recuperação', emoji: '🩹', desc: 'Cura gradual de PV a cada round.', apply: function() { healingActive = true; } },
+        { name: 'Resistência Elemental', emoji: '❄️', desc: 'Absorve parte do dano elemental (fogo, gelo, eletricidade).', apply: function() { elementalResist = true; } },
+        { name: 'Aumento de Dano', emoji: '💥', desc: 'Seus ataques causam mais dano.', apply: function() { damageBuff = true; } },
+        { name: 'Melhoria de Defesa', emoji: '🛡️', desc: 'Reduz o dano recebido dos inimigos.', apply: function() { defenseBuff = true; } },
+        { name: 'Aura', emoji: '🌀', desc: 'Recuperação gradual de PV durante a wave.', apply: function() { auraActive = true; } },
+        { name: 'Elemenfagia', emoji: '⚗️', desc: 'Absorve dano elemental e converte em PV.', apply: function() { elemenfagiaActive = true; } },
+        { name: 'Guarda', emoji: '🛡️🤖', desc: 'Ao morrer, invoca um aliado ou escudo.', apply: function() { guardaActive = true; } }
+    ];
+    // Variáveis dos buffs
+    let healingActive = false, elementalResist = false, damageBuff = false, defenseBuff = false, auraActive = false, elemenfagiaActive = false, guardaActive = false;
+    let fireRate = 0.5, lastShot = 0, bulletScale = 1, companionActive = false, extraLife = false, tripleShot = false;
     let roundInProgress = false;
+    let roundReady = false;
+    let currentWave = 1;
+    let enemies = [];
+    let enemiesToSpawn = 3;
+    let enemiesAlive = 0;
+
+    // Exibir cartas de buff
+    function showBuffOverlay() {
+        const overlay = document.getElementById('buff-overlay');
+        const cardsDiv = document.getElementById('buff-cards');
+        cardsDiv.innerHTML = '';
+        // Sorteia 3 buffs diferentes
+        let options = buffs.slice().sort(() => 0.5 - Math.random()).slice(0,3);
+        options.forEach(buff => {
+            const card = document.createElement('div');
+            card.className = 'buff-card';
+            card.innerHTML = `<div class="buff-emoji">${buff.emoji}</div><div class="buff-name">${buff.name}</div><div class="buff-desc">${buff.desc}</div>`;
+            card.onclick = () => {
+                buff.apply();
+                overlay.style.display = 'none';
+                setTimeout(() => { showRoundOverlay(); }, 500);
+            };
+            cardsDiv.appendChild(card);
+        });
+        overlay.style.display = 'flex';
+    }
     function showRoundOverlay() {
         const overlay = document.getElementById('round-overlay');
         const scary = document.getElementById('scary-text');
@@ -282,9 +214,15 @@
     }
     function hideRoundOverlay() {
         document.getElementById('round-overlay').style.display = 'none';
-        roundInProgress = true;
+        spawnWave();
     }
     document.getElementById('start-round-btn').onclick = hideRoundOverlay;
+
+    // --- Sistema de tiro (seringas) ---
+    let bullets = [];
+    document.addEventListener('keydown', (e) => {
+        if (e.code === 'Space') shoot();
+    });
     // --- Sistema de tiro (seringas) ---
     let bullets = [];
     document.addEventListener('keydown', (e) => {
