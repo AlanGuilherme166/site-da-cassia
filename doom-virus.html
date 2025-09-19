@@ -1,9 +1,106 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
+    <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap" rel="stylesheet">
     <meta charset="UTF-8">
     <title>Doom: Tiro em Vírus</title>
+    <!-- Three.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.155.0/build/three.min.js"></script>
     <style>
+        #round-overlay {
+            position: fixed;
+            left: 0; top: 0; width: 100vw; height: 100vh;
+            background: rgba(0,0,0,0.85);
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            font-size: 2.2rem;
+        }
+            #buff-overlay {
+                position: fixed;
+                left: 0; top: 0; width: 100vw; height: 100vh;
+                background: rgba(0,0,0,0.92);
+                color: #fff;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                z-index: 3000;
+            }
+            .buff-title {
+                font-family: 'Creepster', cursive;
+                color: #ffeb3b;
+                font-size: 2.2rem;
+                margin-bottom: 1.2rem;
+                text-shadow: 2px 2px 8px #000, 0 0 16px #ffeb3b;
+            }
+            .buff-cards {
+                display: flex;
+                gap: 2rem;
+            }
+            .buff-card {
+                background: #232323;
+                border-radius: 18px;
+                box-shadow: 0 0 16px #000;
+                width: 140px;
+                height: 180px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                border: 4px solid transparent;
+                transition: border 0.2s, transform 0.2s;
+                font-family: 'Roboto', sans-serif;
+            }
+            .buff-card:hover {
+                border: 4px solid #ffeb3b;
+                transform: scale(1.07);
+            }
+            .buff-emoji {
+                font-size: 3.5rem;
+                margin-bottom: 1rem;
+            }
+            .buff-name {
+                font-size: 1.2rem;
+                font-weight: bold;
+                margin-bottom: 0.5rem;
+            }
+            .buff-desc {
+                font-size: 1rem;
+                color: #fffde7;
+                text-align: center;
+            }
+        .scary-text {
+            font-family: 'Creepster', cursive;
+            color: #ff1744;
+            font-size: 2.8rem;
+            margin-bottom: 1.2rem;
+            text-shadow: 2px 2px 8px #000, 0 0 16px #ff1744;
+        }
+        .curiosity-text {
+            font-size: 1.3rem;
+            color: #fffde7;
+            margin-bottom: 2rem;
+            max-width: 600px;
+            text-align: center;
+        }
+        .start-btn {
+            background: #ff1744;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            padding: 12px 32px;
+            cursor: pointer;
+            margin-top: 1.5rem;
+            font-family: inherit;
+            box-shadow: 0 0 10px #000;
+        }
         body { background: #181818; color: #e0e0e0; font-family: Arial, sans-serif; text-align: center; }
     .sidebar { position: fixed; top: 0; left: 0; height: 100%; width: 60px; background-color: #121210; transition: width 0.3s; padding-top: 20px; z-index: 1001; overflow-x: hidden; overflow-y: hidden; }
         .sidebar:hover { width: 200px; }
@@ -21,6 +118,15 @@
     </style>
 </head>
 <body>
+    <div id="round-overlay" style="display:none;">
+        <div class="scary-text" id="scary-text"></div>
+        <div class="curiosity-text" id="curiosity-text"></div>
+        <button class="start-btn" id="start-round-btn">Começar Round</button>
+    </div>
+        <div id="buff-overlay" style="display:none;">
+            <div class="buff-title">Escolha uma carta de buff!</div>
+            <div class="buff-cards" id="buff-cards"></div>
+        </div>
     <div class="sidebar">
         <ul>
             <li onclick="window.location.href='dino-bio.html'">🦖<span>Quiz Biologia</span></li>
@@ -33,112 +139,332 @@
         </ul>
     </div>
     <div id="main-content">
-        <h1>Doom: Tiro em Vírus</h1>
-        <div id="game-area">
-            <div id="player">🔫</div>
-        </div>
-        <div id="score">Pontuação: <span id="score-value">0</span></div>
-        <p>Use as setas para mover e espaço para atirar!</p>
+        <h1>Doom: Defesa da Pessoa</h1>
+        <div id="game-area" style="width: 100vw; height: 100vh; position: absolute; left: 0; top: 0; z-index: 0;"></div>
     </div>
     <script>
-    const gameArea = document.getElementById('game-area');
-    const player = document.getElementById('player');
-    const scoreValue = document.getElementById('score-value');
-    let playerPos = 230;
-    let bullets = [];
-    let viruses = [];
-    let score = 0;
-    let gameOver = false;
+    // Curiosidades e textos assustadores
+    const curiosities = [
+        "Seu corpo abriga trilhões de bactérias, superando o número de células humanas!",
+        "Alguns vírus podem permanecer dormentes no corpo por anos antes de atacar.",
+        "Bactérias podem trocar genes entre si, tornando-se mais resistentes.",
+        "O vírus da gripe pode sobreviver em superfícies por até 48 horas.",
+        "Existem bactérias que conseguem sobreviver em ambientes radioativos!"
+    ];
+        // Buffs disponíveis
+        const buffs = [
+            {
+                name: 'Companion',
+                emoji: '🧫',
+                desc: 'Um companheiro atira junto com você!',
+                apply: function() { companionActive = true; }
+            },
+            {
+                name: 'Velocidade de Tiro',
+                emoji: '⚡',
+                desc: 'Reduz o tempo de recarga entre tiros.',
+                apply: function() { fireRate = Math.max(0.15, fireRate - 0.15); }
+            },
+            {
+                name: 'Seringa Gigante',
+                emoji: '💉',
+                desc: 'Seus tiros ficam maiores e mais fortes.',
+                apply: function() { bulletScale = 1.7; }
+            },
+            {
+                name: 'Vida Extra',
+                emoji: '❤️',
+                desc: 'Sobrevive a um ataque de vírus.',
+                apply: function() { extraLife = true; }
+            },
+            {
+                name: 'Tiro Triplo',
+                emoji: '🔱',
+                desc: 'Atira três seringas de uma vez.',
+                apply: function() { tripleShot = true; }
+            },
+            // Novos buffs temáticos
+            {
+                name: 'Recuperação',
+                emoji: '🩹',
+                desc: 'Cura gradual de PV a cada round.',
+                apply: function() { healingActive = true; }
+            },
+            {
+                name: 'Resistência Elemental',
+                emoji: '❄️',
+                desc: 'Absorve parte do dano elemental (fogo, gelo, eletricidade).',
+                apply: function() { elementalResist = true; }
+            },
+            {
+                name: 'Aumento de Dano',
+                emoji: '💥',
+                desc: 'Seus ataques causam mais dano.',
+                apply: function() { damageBuff = true; }
+            },
+            {
+                name: 'Melhoria de Defesa',
+                emoji: '🛡️',
+                desc: 'Reduz o dano recebido dos inimigos.',
+                apply: function() { defenseBuff = true; }
+            },
+            {
+                name: 'Aura',
+                emoji: '🌀',
+                desc: 'Recuperação gradual de PV durante a wave.',
+                apply: function() { auraActive = true; }
+            },
+            {
+                name: 'Elemenfagia',
+                emoji: '⚗️',
+                desc: 'Absorve dano elemental e converte em PV.',
+                apply: function() { elemenfagiaActive = true; }
+            },
+            {
+                name: 'Guarda',
+                emoji: '🛡️🤖',
+                desc: 'Ao morrer, invoca um aliado ou escudo.',
+                apply: function() { guardaActive = true; }
+            }
+        ];
 
-    function movePlayer(dir) {
-        if (gameOver) return;
-        playerPos += dir * 20;
-        if (playerPos < 0) playerPos = 0;
-        if (playerPos > 460) playerPos = 460;
-        player.style.left = playerPos + 'px';
+        // Variáveis dos novos buffs
+        let healingActive = false;
+        let elementalResist = false;
+        let damageBuff = false;
+        let defenseBuff = false;
+        let auraActive = false;
+        let elemenfagiaActive = false;
+        let guardaActive = false;
+        let fireRate = 0.5;
+        let lastShot = 0;
+        let bulletScale = 1;
+        let companionActive = false;
+        let extraLife = false;
+        let tripleShot = false;
+
+        // Exibir cartas de buff
+        function showBuffOverlay() {
+            const overlay = document.getElementById('buff-overlay');
+            const cardsDiv = document.getElementById('buff-cards');
+            cardsDiv.innerHTML = '';
+            // Sorteia 3 buffs diferentes
+            let options = buffs.slice().sort(() => 0.5 - Math.random()).slice(0,3);
+            options.forEach(buff => {
+                const card = document.createElement('div');
+                card.className = 'buff-card';
+                card.innerHTML = `<div class="buff-emoji">${buff.emoji}</div><div class="buff-name">${buff.name}</div><div class="buff-desc">${buff.desc}</div>`;
+                card.onclick = () => {
+                    buff.apply();
+                    overlay.style.display = 'none';
+                    setTimeout(() => { spawnWave(); }, 500);
+                };
+                cardsDiv.appendChild(card);
+            });
+            overlay.style.display = 'flex';
+        }
+    const scaryTexts = [
+        "Eles estão vindo...",
+        "Você sente o cheiro da mutação?",
+        "A próxima onda será pior...",
+        "O medo se espalha como um vírus...",
+        "Prepare-se para o desconhecido!"
+    ];
+    let roundInProgress = false;
+    function showRoundOverlay() {
+        const overlay = document.getElementById('round-overlay');
+        const scary = document.getElementById('scary-text');
+        const curiosity = document.getElementById('curiosity-text');
+        scary.textContent = scaryTexts[Math.floor(Math.random()*scaryTexts.length)];
+        curiosity.textContent = curiosities[Math.floor(Math.random()*curiosities.length)];
+        overlay.style.display = 'flex';
+        roundInProgress = false;
     }
+    function hideRoundOverlay() {
+        document.getElementById('round-overlay').style.display = 'none';
+        roundInProgress = true;
+    }
+    document.getElementById('start-round-btn').onclick = hideRoundOverlay;
+    // --- Sistema de tiro (seringas) ---
+    let bullets = [];
+    document.addEventListener('keydown', (e) => {
+        if (e.code === 'Space') shoot();
+    });
 
     function shoot() {
-        if (gameOver) return;
-        const bullet = document.createElement('div');
-        bullet.className = 'bullet';
-        bullet.style.left = (playerPos + 16) + 'px';
-        bullet.style.bottom = '50px';
-        gameArea.appendChild(bullet);
-        bullets.push(bullet);
+        // Cria uma seringa (cilindro) na frente da bactéria
+        let bulletGeo = new THREE.CylinderGeometry(0.15, 0.15, 1.5, 16);
+        let bulletMat = new THREE.MeshPhongMaterial({ color: 0x90caf9 });
+        let bullet = new THREE.Mesh(bulletGeo, bulletMat);
+        bullet.rotation.x = Math.PI / 2;
+        // Direção do tiro: para frente do player
+        let dir = new THREE.Vector3(0, 0, -1);
+        bullet.position.copy(bacteria.position);
+        bullet.position.y = 1.1;
+        bullets.push({ mesh: bullet, dir: dir.clone() });
+        scene.add(bullet);
+            let now = performance.now();
+            if (now - lastShot < fireRate * 1000) return;
+            lastShot = now;
+            // Função para criar um tiro
+            function createBullet(dir) {
+                let bulletGeo = new THREE.CylinderGeometry(0.15 * bulletScale, 0.15 * bulletScale, 1.5 * bulletScale, 16);
+                let bulletMat = new THREE.MeshPhongMaterial({ color: 0x90caf9 });
+                let bullet = new THREE.Mesh(bulletGeo, bulletMat);
+                bullet.rotation.x = Math.PI / 2;
+                bullet.position.copy(bacteria.position);
+                bullet.position.y = 1.1;
+                bullets.push({ mesh: bullet, dir: dir.clone() });
+                scene.add(bullet);
+            }
+            // Direção do tiro principal
+            createBullet(dir);
+            // Tiro triplo
+            if (tripleShot) {
+                let dirL = dir.clone().applyAxisAngle(new THREE.Vector3(0,1,0), 0.18);
+                let dirR = dir.clone().applyAxisAngle(new THREE.Vector3(0,1,0), -0.18);
+                createBullet(dirL);
+                createBullet(dirR);
+            }
+            // Companion
+            if (companionActive) {
+                let dirC = dir.clone().applyAxisAngle(new THREE.Vector3(0,1,0), 0.35);
+                let dirCC = dir.clone().applyAxisAngle(new THREE.Vector3(0,1,0), -0.35);
+                createBullet(dirC);
+                createBullet(dirCC);
+            }
     }
+    // --- Three.js setup ---
+    let scene = new THREE.Scene();
+    let camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+    let renderer = new THREE.WebGLRenderer();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.getElementById('game-area').appendChild(renderer.domElement);
 
-    function spawnVirus() {
-        if (gameOver) return;
-        const virus = document.createElement('div');
-        virus.className = 'virus';
-        virus.innerText = '🦠';
-        virus.style.left = (Math.random() * 460) + 'px';
-        virus.style.top = '0px';
-        gameArea.appendChild(virus);
-        viruses.push(virus);
+    // Arena (chão)
+    let floorGeometry = new THREE.PlaneGeometry(30, 30);
+    let floorMaterial = new THREE.MeshPhongMaterial({ color: 0x222222 });
+    let floor = new THREE.Mesh(floorGeometry, floorMaterial);
+    floor.rotation.x = -Math.PI / 2;
+    scene.add(floor);
+
+    // Luz
+    let light = new THREE.PointLight(0xffffff, 1, 100);
+    light.position.set(0, 20, 10);
+    scene.add(light);
+
+    // Player (bactéria)
+    let bacteriaGeometry = new THREE.SphereGeometry(1, 32, 32);
+    let bacteriaMaterial = new THREE.MeshPhongMaterial({ color: 0x00c853 });
+    let bacteria = new THREE.Mesh(bacteriaGeometry, bacteriaMaterial);
+    bacteria.position.set(0, 1, 10);
+    scene.add(bacteria);
+
+    // Pessoa defendida
+    let personGeometry = new THREE.SphereGeometry(1.2, 32, 32);
+    let personMaterial = new THREE.MeshPhongMaterial({ color: 0xffe082 });
+    let person = new THREE.Mesh(personGeometry, personMaterial);
+    person.position.set(0, 1.2, -10);
+    scene.add(person);
+
+    // Inimigos (vírus vermelhos)
+    let enemies = [];
+    let wave = 1;
+    let enemiesToSpawn = 3;
+    let enemiesAlive = 0;
+    function spawnWave() {
+    showRoundOverlay();
+        for (let i = 0; i < enemiesToSpawn; i++) {
+            let angle = Math.random() * Math.PI * 2;
+            let radius = 13;
+            let x = Math.cos(angle) * radius;
+            let z = Math.sin(angle) * radius;
+            let enemyGeo = new THREE.SphereGeometry(1, 32, 32);
+            let enemyMat = new THREE.MeshPhongMaterial({ color: 0xc62828 });
+            let enemy = new THREE.Mesh(enemyGeo, enemyMat);
+            enemy.position.set(x, 1, z);
+            scene.add(enemy);
+            enemies.push(enemy);
+        }
+        enemiesAlive = enemiesToSpawn;
     }
+    spawnWave();
 
-    function updateGame() {
-        if (gameOver) return;
-        // Move bullets
+    // Camera
+    camera.position.set(0, 5, 18);
+    camera.lookAt(bacteria.position);
+
+    // Movimentação básica (WASD)
+    let move = { left: false, right: false, up: false, down: false };
+    document.addEventListener('keydown', (e) => {
+        if (e.code === 'KeyA') move.left = true;
+        if (e.code === 'KeyD') move.right = true;
+        if (e.code === 'KeyW') move.up = true;
+        if (e.code === 'KeyS') move.down = true;
+    });
+    document.addEventListener('keyup', (e) => {
+        if (e.code === 'KeyA') move.left = false;
+        if (e.code === 'KeyD') move.right = false;
+        if (e.code === 'KeyW') move.up = false;
+        if (e.code === 'KeyS') move.down = false;
+    });
+
+    function animate() {
+        // Atualiza balas (seringas)
         for (let i = bullets.length - 1; i >= 0; i--) {
-            const bullet = bullets[i];
-            let bottom = parseInt(bullet.style.bottom);
-            bottom += 10;
-            bullet.style.bottom = bottom + 'px';
-            if (bottom > 300) {
-                bullet.remove();
+            let b = bullets[i];
+            b.mesh.position.addScaledVector(b.dir, 0.7);
+            // Remove se sair da arena
+            if (Math.abs(b.mesh.position.x) > 16 || Math.abs(b.mesh.position.z) > 16) {
+                scene.remove(b.mesh);
                 bullets.splice(i, 1);
+                continue;
             }
-        }
-        // Move viruses
-        for (let i = viruses.length - 1; i >= 0; i--) {
-            const virus = viruses[i];
-            let top = parseInt(virus.style.top);
-            top += 2 + score * 0.05;
-            virus.style.top = top + 'px';
-            if (top > 300) {
-                virus.remove();
-                viruses.splice(i, 1);
-                gameOver = true;
-                setTimeout(() => alert('Game Over! Pontuação: ' + score), 100);
-            }
-        }
-        // Colisão
-        for (let i = viruses.length - 1; i >= 0; i--) {
-            const virus = viruses[i];
-            const virusRect = virus.getBoundingClientRect();
-            for (let j = bullets.length - 1; j >= 0; j--) {
-                const bullet = bullets[j];
-                const bulletRect = bullet.getBoundingClientRect();
-                if (
-                    bulletRect.left < virusRect.right &&
-                    bulletRect.right > virusRect.left &&
-                    bulletRect.top < virusRect.bottom &&
-                    bulletRect.bottom > virusRect.top
-                ) {
-                    virus.remove();
-                    bullet.remove();
-                    viruses.splice(i, 1);
-                    bullets.splice(j, 1);
-                    score++;
-                    scoreValue.textContent = score;
+            // Colisão com inimigos
+            for (let j = enemies.length - 1; j >= 0; j--) {
+                let enemy = enemies[j];
+                if (b.mesh.position.distanceTo(enemy.position) < 1.2) {
+                    scene.remove(enemy);
+                    enemies.splice(j, 1);
+                    scene.remove(b.mesh);
+                    bullets.splice(i, 1);
                     break;
                 }
             }
         }
-        requestAnimationFrame(updateGame);
+        // Movimentação do player
+        let speed = 0.2;
+        if (move.left) bacteria.position.x -= speed;
+        if (move.right) bacteria.position.x += speed;
+        if (move.up) bacteria.position.z -= speed;
+        if (move.down) bacteria.position.z += speed;
+        // Limites da arena
+        bacteria.position.x = Math.max(-14, Math.min(14, bacteria.position.x));
+        bacteria.position.z = Math.max(-14, Math.min(14, bacteria.position.z));
+        camera.lookAt(bacteria.position);
+
+        // Movimento dos inimigos em direção à pessoa
+        let enemySpeed = 0.04 + wave * 0.01;
+        for (let i = enemies.length - 1; i >= 0; i--) {
+            let enemy = enemies[i];
+            let dir = new THREE.Vector3();
+            dir.subVectors(person.position, enemy.position).normalize();
+            enemy.position.x += dir.x * enemySpeed;
+            enemy.position.z += dir.z * enemySpeed;
+            // Checa se chegou na pessoa
+            let dist = enemy.position.distanceTo(person.position);
+            if (dist < 2) {
+                // Game over (pode melhorar depois)
+                alert('Game Over! O vírus alcançou a pessoa!');
+                window.location.reload();
+                return;
+            }
+        }
+
+        renderer.render(scene, camera);
+        requestAnimationFrame(animate);
     }
-
-    document.body.onkeydown = function(e) {
-        if (e.code === 'ArrowLeft') movePlayer(-1);
-        if (e.code === 'ArrowRight') movePlayer(1);
-        if (e.code === 'Space') shoot();
-    };
-
-    setInterval(spawnVirus, 1200);
-    updateGame();
+    animate();
     </script>
 </body>
 </html>
