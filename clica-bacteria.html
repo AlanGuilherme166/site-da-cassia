@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Clique na Bactéria!</title>
+    <style>
+        body { background: #181818; color: #fff; font-family: Arial, sans-serif; text-align: center; }
+        #game-area {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+        #bacteria {
+            position: absolute;
+            font-size: 64px;
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+        #score {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 2rem;
+            background: #232323;
+            padding: 10px 30px;
+            border-radius: 12px;
+            box-shadow: 0 0 10px #000;
+        }
+    </style>
+</head>
+<body>
+    <div id="score">Pontuação: <span id="score-value">0</span></div>
+    <div id="game-area"></div>
+    <script>
+    const gameArea = document.getElementById('game-area');
+    const scoreValue = document.getElementById('score-value');
+    let score = 0;
+
+    function randomPosition() {
+        const w = window.innerWidth - 80;
+        const h = window.innerHeight - 80;
+        return {
+            x: Math.random() * w,
+            y: Math.random() * h
+        };
+    }
+
+    function spawnBacteria() {
+        let bacteria = document.createElement('div');
+        bacteria.id = 'bacteria';
+        bacteria.innerText = '🦠';
+        let pos = randomPosition();
+        bacteria.style.left = pos.x + 'px';
+        bacteria.style.top = pos.y + 'px';
+        bacteria.onclick = function() {
+            score++;
+            scoreValue.textContent = score;
+            bacteria.remove();
+            spawnBacteria();
+        };
+        gameArea.appendChild(bacteria);
+    }
+
+    spawnBacteria();
+    </script>
+</body>
+</html>
