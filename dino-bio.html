@@ -185,59 +185,247 @@
             }, 800);
         }
 
-        // Perguntas do jogo
-        const questions = [
+        // Sistema de níveis e perguntas do jogo
+        const levels = [
+            // Nível 1 - Fundamental I (fácil)
             {
-                q: "Qual é a molécula responsável pelo armazenamento genético?",
-                o: ["DNA", "Proteína", "Lipídio", "Carboidrato"],
-                a: 0
+                name: 'Nível 1 - Básico (Fundamental)',
+                questions: [
+                    { q: 'Qual é a cor das folhas da maioria das plantas durante o dia?', o: ['Verde', 'Azul', 'Vermelho', 'Amarelo'], a: 0 },
+                    { q: 'Qual desses é um animal?', o: ['Rosa', 'Cacto', 'Cachorro', 'Átomo'], a: 2 },
+                    { q: 'Qual destes é essencial para as plantas realizarem fotossíntese?', o: ['Luz', 'Cimento', 'Ferro', 'Plástico'], a: 0 }
+                ]
             },
+            // Nível 2 - Fundamental II
             {
-                q: "Qual desses é um órgão exclusivo de plantas?",
-                o: ["Cloroplasto", "Mitocôndria", "Ribossomo", "Lisossomo"],
-                a: 0
+                name: 'Nível 2 - Elementar (Fundamental)',
+                questions: [
+                    { q: 'Qual o nome do órgão que bombear sangue no corpo humano?', o: ['Pulmão', 'Coração', 'Fígado', 'Rim'], a: 1 },
+                    { q: 'De onde as plantas obtêm água?', o: ['Do solo', 'Do ar', 'Da comida', 'Do sol'], a: 0 },
+                    { q: 'Qual é o sentido usado para ouvir?', o: ['Visão', 'Olfato', 'Audição', 'Paladar'], a: 2 }
+                ]
             },
+            // Nível 3 - Ensino Fundamental superior
             {
-                q: "Qual reino pertence a bactéria?",
-                o: ["Fungi", "Animalia", "Monera", "Protista"],
-                a: 2
+                name: 'Nível 3 - Intermediário (Fundamental Superior)',
+                questions: [
+                    { q: 'Qual é a função das raízes nas plantas?', o: ['Fotossíntese', 'Fixação e absorção de água', 'Produção de sementes', 'Respiração'], a: 1 },
+                    { q: 'Qual destes é um vertebrado?', o: ['Inseto', 'Peixe', 'Molusco', 'Bactéria'], a: 1 },
+                    { q: 'Qual é a principal molécula de armazenamento de energia nas células?', o: ['Água', 'ATP', 'DNA', 'Celulose'], a: 1 }
+                ]
+            },
+            // Nível 4 - Ensino Médio (fácil)
+            {
+                name: 'Nível 4 - Ensino Médio (Fácil)',
+                questions: [
+                    { q: 'Qual organela celular é responsável pela produção de energia (ATP)?', o: ['Lisossomo', 'Núcleo', 'Mitocôndria', 'Cloroplasto'], a: 2 },
+                    { q: 'Como se chama o processo pelo qual as plantas convertem luz em energia química?', o: ['Respiração', 'Fermentação', 'Fotossíntese', 'Transpiração'], a: 2 },
+                    { q: 'Qual é a unidade básica da hereditariedade?', o: ['Átomo', 'Molécula', 'Gene', 'Órgão'], a: 2 }
+                ]
+            },
+            // Nível 5 - Ensino Médio (médio)
+            {
+                name: 'Nível 5 - Ensino Médio (Médio)',
+                questions: [
+                    { q: 'Qual macromolécula é formada por aminoácidos?', o: ['Carboidrato', 'Proteína', 'Lipídio', 'Ácido nucleico'], a: 1 },
+                    { q: 'Qual ciclo celular inclui a mitose?', o: ['Ciclo de Krebs', 'Ciclo celular', 'Fotossíntese', 'Glicólise'], a: 1 },
+                    { q: 'Qual é o principal gás liberado na respiração celular aeróbica?', o: ['Nitrogênio', 'Oxigênio', 'Dióxido de carbono', 'Hidrogênio'], a: 2 }
+                ]
+            },
+            // Nível 6 - Ensino Médio (difícil)
+            {
+                name: 'Nível 6 - Ensino Médio (Difícil)',
+                questions: [
+                    { q: 'Qual estrutura sofreu mutação se a sequência de DNA é alterada?', o: ['Mitocôndria', 'Gene', 'Ribossomo', 'Citoplasma'], a: 1 },
+                    { q: 'Qual processo aumenta a variabilidade genética por recombinação?', o: ['Meiose', 'Mitose', 'Brotamento', 'Fissão binária'], a: 0 },
+                    { q: 'Qual molécula carrega aminoácidos até o ribossomo?', o: ['tRNA', 'mRNA', 'rRNA', 'DNA'], a: 0 }
+                ]
+            },
+            // Nível 7 - Início de faculdade (biologia básica)
+            {
+                name: 'Nível 7 - Graduação (Introdução)',
+                questions: [
+                    { q: 'Qual o papel dos ribossomos na célula?', o: ['Sintetizar proteínas', 'Gerar ATP', 'Armazenar lipídios', 'Replicar DNA'], a: 0 },
+                    { q: 'Qual é a membrana que envolve organelas como núcleo?', o: ['Membrana plasmática', 'Envelope nuclear', 'Parede celular', 'Retícula endoplasmática'], a: 1 },
+                    { q: 'Em qual organelo ocorre a síntese proteica ligada à membrana?', o: ['Ribossomo livre', 'Retículo endoplasmático rugoso', 'Mitocôndria', 'Lisossomo'], a: 1 }
+                ]
+            },
+            // Nível 8 - Faculdade (médio)
+            {
+                name: 'Nível 8 - Graduação (Intermediário)',
+                questions: [
+                    { q: 'Qual a diferença entre osmose e difusão?', o: ['Osmose depende de gradiente elétrico', 'Difusão é só em sólidos', 'Osmose é passagem de água por membrana semipermeável; difusão é movimento de soluto', 'Não há diferença'], a: 2 },
+                    { q: 'Qual enzima inicia a transcrição em eucariotos?', o: ['RNA polimerase II', 'DNA polimerase', 'Ligase', 'Topoisomerase'], a: 0 },
+                    { q: 'Qual processo corresponde à tradução?', o: ['síntese de proteínas a partir de mRNA', 'replicação de DNA', 'transcrição de DNA para RNA', 'degradação de proteínas'], a: 0 }
+                ]
+            },
+            // Nível 9 - Faculdade (difícil)
+            {
+                name: 'Nível 9 - Graduação (Avançado)',
+                questions: [
+                    { q: 'Qual a finalidade do complexo de Golgi?', o: ['Produzir ATP', 'Modificar e empacotar proteínas', 'Realizar fotossíntese', 'Reparar DNA'], a: 1 },
+                    { q: 'Qual é o produto final da glicólise (em condições aeróbicas) que entra no ciclo de Krebs?', o: ['Piruvato', 'Lactato', 'Glicogênio', 'Acetil-CoA'], a: 0 },
+                    { q: 'Qual técnica permite visualizar proteínas separadas por tamanho?', o: ['PCR', 'Eletroforese em gel', 'Sequenciamento de DNA', 'Microscopia eletrônica'], a: 1 }
+                ]
+            },
+            // Nível 10 - Faculdade (muito difícil / pós-graduação introdutório)
+            {
+                name: 'Nível 10 - Pós/Avançado',
+                questions: [
+                    { q: 'Qual é a função do complexo patógeno CRISPR-Cas em bactérias?', o: ['Produção de energia', 'Sistema imune adaptativo (defesa contra vírus)', 'Síntese de proteínas', 'Movimento celular'], a: 1 },
+                    { q: 'Na regulação gênica, qual elemento atua como sítio de ligação para RNA polimerase?', o: ['Operon', 'Promotor', 'Exon', 'Intrão'], a: 1 },
+                    { q: 'Qual processo descreve a conversão de informação genética em função celular?', o: ['Fluxo central da biologia molecular (DNA→RNA→Proteína)', 'Mitose', 'Osmose', 'Endocitose'], a: 0 }
+                ]
+            }
+            ,
+            // Nível 11 - Pós/Avançado 2
+            {
+                name: 'Nível 11 - Pós/Avançado II',
+                questions: [
+                    { q: 'Qual o papel da ubiquitinação?', o: ['Marcar proteínas para degradação', 'Sintetizar lipídios', 'Replicar DNA', 'Gerar ATP'], a: 0 },
+                    { q: 'Qual organela está envolvida na beta-oxidação de ácidos graxos?', o: ['Peroxissomo', 'Lisossomo', 'Cloroplasto', 'Núcleo'], a: 0 },
+                    { q: 'O que é splicing alternativo?', o: ['Mecanismo de reparo de DNA', 'Remoção de introns permitindo diferentes isoformas de proteínas', 'Processo de tradução', 'Movimento celular'], a: 1 }
+                ]
+            },
+            // Nível 12 - Especializado
+            {
+                name: 'Nível 12 - Especializado',
+                questions: [
+                    { q: 'Qual técnica é utilizada para quantificar expressão gênica em larga escala?', o: ['Northern blot', 'Microarranjos (microarrays) / RNA-seq', 'Western blot', 'PCR convencional'], a: 1 },
+                    { q: 'Qual proteína transporta elétrons na cadeia respiratória?', o: ['Hemoglobina', 'Citocromo c', 'Actina', 'Tubulina'], a: 1 },
+                    { q: 'O que define um gene essencial?', o: ['Um gene com expressão baixa', 'Um gene sem promotor', 'Um gene cuja perda resulta em inviabilidade', 'Um gene duplicado'], a: 2 }
+                ]
+            },
+            // Nível 13 - Avançado II
+            {
+                name: 'Nível 13 - Avançado II',
+                questions: [
+                    { q: 'Qual a função dos microRNAs?', o: ['Codificar proteínas', 'Regular expressão gênica pós-transcricionalmente', 'Atuar como enzimas', 'Formar ribossomos'], a: 1 },
+                    { q: 'Qual é o efeito de uma mutação missense?', o: ['Substituição de um aminoácido por outro', 'Parada prematura da tradução', 'Não altera a proteína', 'Remove um exon'], a: 0 },
+                    { q: 'Que tipo de ligação estabiliza a estrutura secundária das proteínas?', o: ['Ligação iônica', 'Ponte de hidrogênio', 'Ligação covalente simples', 'Ligação peptídica'], a: 1 }
+                ]
+            },
+            // Nível 14 - Pesquisa
+            {
+                name: 'Nível 14 - Pesquisa',
+                questions: [
+                    { q: 'Qual método é usado para clonar um gene em um plasmídeo?', o: ['Eletroforese', 'Digestão por enzimas de restrição e ligase', 'Western blot', 'Microscopia'], a: 1 },
+                    { q: 'O que caracteriza uma célula-tronco pluripotente?', o: ['Capacidade de formar apenas um tipo celular', 'Capacidade de formar múltiplos tipos celulares', 'Não se divide', 'Tem núcleo multinucleado'], a: 1 },
+                    { q: 'Qual abordagem é usada para estudar interação proteína-proteína?', o: ['ELISA', 'Co-imunoprecipitação (Co-IP)', 'PCR', 'Southern blot'], a: 1 }
+                ]
+            },
+            // Nível 15 - Tópicos avançados
+            {
+                name: 'Nível 15 - Tópicos Avançados',
+                questions: [
+                    { q: 'Qual é o principal mecanismo de reparo de quebras de dupla hélice em eucariotos?', o: ['BER', 'NER', 'Recombinação homóloga (HR)', 'Mismatch repair'], a: 2 },
+                    { q: 'Qual técnica permite editar diretamente sequências genômicas?', o: ['Northern blot', 'CRISPR-Cas9', 'ELISA', 'Eletroforese'], a: 1 },
+                    { q: 'O que é epigenética?', o: ['Mudanças na sequência de DNA', 'Alterações herdáveis na expressão gênica sem mudança na sequência de DNA', 'Mutação pontual', 'Transcrição'], a: 1 }
+                ]
             }
         ];
-        let current = 0, score = 0;
 
-        function showQuestion() {
-            if (current >= questions.length) {
-                document.getElementById('question').textContent = "Fim de jogo!";
-                document.getElementById('options').innerHTML = "";
-                document.getElementById('result').textContent = `Pontuação: ${score}/${questions.length}`;
+        let currentLevel = 0;
+        let currentQuestion = 0;
+        let levelScore = 0;
+        let totalScore = 0;
+
+        // Elementos de interface adicionais
+        const questionEl = document.getElementById('question');
+        const optionsEl = document.getElementById('options');
+        const resultEl = document.getElementById('result');
+
+        // criar display do nível e botão avançar
+        const levelHeader = document.createElement('div');
+        levelHeader.id = 'level-header';
+        levelHeader.style.marginBottom = '10px';
+        levelHeader.style.fontWeight = 'bold';
+        document.getElementById('game').insertBefore(levelHeader, questionEl);
+
+        const nextLevelBtn = document.createElement('button');
+        nextLevelBtn.textContent = 'Avançar para o próximo nível';
+        nextLevelBtn.className = 'back-btn';
+        nextLevelBtn.style.display = 'none';
+        nextLevelBtn.onclick = () => {
+            currentLevel++;
+            if (currentLevel >= levels.length) {
+                // terminou todos os níveis
+                questionEl.textContent = 'Parabéns — você completou todos os níveis!';
+                optionsEl.innerHTML = '';
+                resultEl.textContent = `Pontuação total: ${totalScore}`;
+                nextLevelBtn.style.display = 'none';
                 return;
             }
-            const q = questions[current];
-            document.getElementById('question').textContent = q.q;
-            document.getElementById('options').innerHTML = "";
+            loadLevel(currentLevel);
+        };
+        document.getElementById('game').appendChild(nextLevelBtn);
+
+        function loadLevel(levelIndex) {
+            currentLevel = levelIndex;
+            currentQuestion = 0;
+            levelScore = 0;
+            levelHeader.textContent = `${levels[levelIndex].name} — Pergunta ${currentQuestion + 1}/${levels[levelIndex].questions.length}`;
+            resultEl.textContent = '';
+            nextLevelBtn.style.display = 'none';
+            showQuestion();
+        }
+
+        function showQuestion() {
+            const level = levels[currentLevel];
+            if (!level) return;
+            if (currentQuestion >= level.questions.length) {
+                // nível concluído
+                totalScore += levelScore;
+                questionEl.textContent = `Nível concluído: ${level.name}`;
+                optionsEl.innerHTML = '';
+                resultEl.textContent = `Pontuação no nível: ${levelScore}/${level.questions.length}`;
+                if (currentLevel < levels.length - 1) {
+                    nextLevelBtn.style.display = 'inline-block';
+                } else {
+                    nextLevelBtn.textContent = 'Finalizar';
+                    nextLevelBtn.style.display = 'inline-block';
+                }
+                return;
+            }
+
+            const q = level.questions[currentQuestion];
+            levelHeader.textContent = `${level.name} — Pergunta ${currentQuestion + 1}/${level.questions.length}`;
+            questionEl.textContent = q.q;
+            optionsEl.innerHTML = '';
+            let answered = false;
             q.o.forEach((opt, i) => {
                 const btn = document.createElement('button');
                 btn.textContent = opt;
-                btn.className = "option";
+                btn.className = 'option';
                 btn.onclick = () => {
+                    if (answered) return; // prevenir múltiplos cliques
+                    answered = true;
+
+                    // esconder imediatamente as alternativas para evitar cliques acidentais
+                    Array.from(optionsEl.children).forEach(b => b.style.display = 'none');
+
                     if (i === q.a) {
-                        score++;
-                        document.getElementById('result').textContent = "Correto!";
+                        levelScore++;
+                        resultEl.textContent = 'Correto!';
                         confettiBurst();
                     } else {
-                        document.getElementById('result').textContent = "Errado!";
+                        resultEl.textContent = 'Errado!';
                         showWrongX();
                     }
-                    current++;
+                    currentQuestion++;
                     setTimeout(() => {
-                        document.getElementById('result').textContent = "";
+                        resultEl.textContent = '';
+                        // restaurar display das alternativas antes da próxima pergunta
+                        optionsEl.style.display = '';
                         showQuestion();
-                    }, 1200);
+                    }, 1000);
                 };
-                document.getElementById('options').appendChild(btn);
+                optionsEl.appendChild(btn);
             });
         }
-        showQuestion();
+
+        // iniciar no nível 0
+        loadLevel(0);
     </script>
 </body>
 </html>
