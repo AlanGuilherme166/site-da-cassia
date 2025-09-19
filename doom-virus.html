@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Doom: Tiro em Vírus</title>
+    <style>
+        body { background: #181818; color: #e0e0e0; font-family: Arial, sans-serif; text-align: center; }
+        .sidebar { position: fixed; top: 0; left: 0; height: 100%; width: 60px; background-color: #121210; transition: width 0.3s; padding-top: 20px; z-index: 1001; overflow-x: hidden; }
+        .sidebar:hover { width: 200px; }
+        .sidebar ul { list-style: none; padding: 0; }
+        .sidebar ul li { color: #e0e0e0; padding: 15px; text-align: center; transition: background-color 0.3s; opacity: 1; cursor: pointer; }
+        .sidebar ul li:hover { background-color: #232323; }
+        .sidebar ul li span { opacity: 0; transition: opacity 0.3s; white-space: nowrap; margin-left: 10px; }
+        .sidebar:hover ul li span { opacity: 1; }
+        #main-content { margin-left: 70px; padding: 20px; }
+        #game-area { background: #232323; margin: 40px auto; width: 500px; height: 300px; border-radius: 10px; box-shadow: 0 0 10px #000; position: relative; overflow: hidden; }
+        #player { position: absolute; left: 230px; bottom: 10px; font-size: 40px; }
+        .virus { position: absolute; top: 0; font-size: 32px; }
+        .bullet { position: absolute; width: 8px; height: 16px; background: #ffeb3b; border-radius: 4px; }
+        #score { margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <ul>
+            <li onclick="window.location.href='dino-bio.html'">🦖<span>Quiz Biologia</span></li>
+            <li onclick="window.location.href='dino-jumper.html'">🦠<span>Bactéria Jumper</span></li>
+            <li onclick="window.location.href='campo-minado-virus.html'">🦠<span>Campo Minado Vírus</span></li>
+            <li onclick="window.location.href='jogo-da-velha.html'">🦠🦠<span>Jogo da Velha Bio</span></li>
+            <li onclick="window.location.href='jogo-tiro-bacteria.html'">🧫<span>Bactéria Atiradora</span></li>
+            <li onclick="window.location.href='doom-virus.html'">🧪<span>Doom: Tiro em Vírus</span></li>
+            <li onclick="window.location.href='index.html'">🏠<span>Voltar ao Site</span></li>
+        </ul>
+    </div>
+    <div id="main-content">
+        <h1>Doom: Tiro em Vírus</h1>
+        <div id="game-area">
+            <div id="player">🔫</div>
+        </div>
+        <div id="score">Pontuação: <span id="score-value">0</span></div>
+        <p>Use as setas para mover e espaço para atirar!</p>
+    </div>
+    <script>
+    const gameArea = document.getElementById('game-area');
+    const player = document.getElementById('player');
+    const scoreValue = document.getElementById('score-value');
+    let playerPos = 230;
+    let bullets = [];
+    let viruses = [];
+    let score = 0;
+    let gameOver = false;
+
+    function movePlayer(dir) {
+        if (gameOver) return;
+        playerPos += dir * 20;
+        if (playerPos < 0) playerPos = 0;
+        if (playerPos > 460) playerPos = 460;
+        player.style.left = playerPos + 'px';
+    }
+
+    function shoot() {
+        if (gameOver) return;
+        const bullet = document.createElement('div');
+        bullet.className = 'bullet';
+        bullet.style.left = (playerPos + 16) + 'px';
+        bullet.style.bottom = '50px';
+        gameArea.appendChild(bullet);
+        bullets.push(bullet);
+    }
+
+    function spawnVirus() {
+        if (gameOver) return;
+        const virus = document.createElement('div');
+        virus.className = 'virus';
+        virus.innerText = '🦠';
+        virus.style.left = (Math.random() * 460) + 'px';
+        virus.style.top = '0px';
+        gameArea.appendChild(virus);
+        viruses.push(virus);
+    }
+
+    function updateGame() {
+        if (gameOver) return;
+        // Move bullets
+        for (let i = bullets.length - 1; i >= 0; i--) {
+            const bullet = bullets[i];
+            let bottom = parseInt(bullet.style.bottom);
+            bottom += 10;
+            bullet.style.bottom = bottom + 'px';
+            if (bottom > 300) {
+                bullet.remove();
+                bullets.splice(i, 1);
+            }
+        }
+        // Move viruses
+        for (let i = viruses.length - 1; i >= 0; i--) {
+            const virus = viruses[i];
+            let top = parseInt(virus.style.top);
+            top += 2 + score * 0.05;
+            virus.style.top = top + 'px';
+            if (top > 300) {
+                virus.remove();
+                viruses.splice(i, 1);
+                gameOver = true;
+                setTimeout(() => alert('Game Over! Pontuação: ' + score), 100);
+            }
+        }
+        // Colisão
+        for (let i = viruses.length - 1; i >= 0; i--) {
+            const virus = viruses[i];
+            const virusRect = virus.getBoundingClientRect();
+            for (let j = bullets.length - 1; j >= 0; j--) {
+                const bullet = bullets[j];
+                const bulletRect = bullet.getBoundingClientRect();
+                if (
+                    bulletRect.left < virusRect.right &&
+                    bulletRect.right > virusRect.left &&
+                    bulletRect.top < virusRect.bottom &&
+                    bulletRect.bottom > virusRect.top
+                ) {
+                    virus.remove();
+                    bullet.remove();
+                    viruses.splice(i, 1);
+                    bullets.splice(j, 1);
+                    score++;
+                    scoreValue.textContent = score;
+                    break;
+                }
+            }
+        }
+        requestAnimationFrame(updateGame);
+    }
+
+    document.body.onkeydown = function(e) {
+        if (e.code === 'ArrowLeft') movePlayer(-1);
+        if (e.code === 'ArrowRight') movePlayer(1);
+        if (e.code === 'Space') shoot();
+    };
+
+    setInterval(spawnVirus, 1200);
+    updateGame();
+    </script>
+</body>
+</html>
