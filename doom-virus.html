@@ -291,49 +291,35 @@
         if (e.code === 'Space') shoot();
     });
 
-    function shoot() {
-        // Cria uma seringa (cilindro) na frente da bactéria
-        let bulletGeo = new THREE.CylinderGeometry(0.15, 0.15, 1.5, 16);
-        let bulletMat = new THREE.MeshPhongMaterial({ color: 0x90caf9 });
-        let bullet = new THREE.Mesh(bulletGeo, bulletMat);
-        bullet.rotation.x = Math.PI / 2;
-        // Direção do tiro: para frente do player
-        let dir = new THREE.Vector3(0, 0, -1);
-        bullet.position.copy(bacteria.position);
-        bullet.position.y = 1.1;
-        bullets.push({ mesh: bullet, dir: dir.clone() });
-        scene.add(bullet);
-            let now = performance.now();
-            if (now - lastShot < fireRate * 1000) return;
-            lastShot = now;
-            // Função para criar um tiro
-            function createBullet(dir) {
-                let bulletGeo = new THREE.CylinderGeometry(0.15 * bulletScale, 0.15 * bulletScale, 1.5 * bulletScale, 16);
-                let bulletMat = new THREE.MeshPhongMaterial({ color: 0x90caf9 });
-                let bullet = new THREE.Mesh(bulletGeo, bulletMat);
-                bullet.rotation.x = Math.PI / 2;
-                bullet.position.copy(bacteria.position);
-                bullet.position.y = 1.1;
-                bullets.push({ mesh: bullet, dir: dir.clone() });
-                scene.add(bullet);
-            }
-            // Direção do tiro principal
-            createBullet(dir);
-            // Tiro triplo
-            if (tripleShot) {
-                let dirL = dir.clone().applyAxisAngle(new THREE.Vector3(0,1,0), 0.18);
-                let dirR = dir.clone().applyAxisAngle(new THREE.Vector3(0,1,0), -0.18);
-                createBullet(dirL);
-                createBullet(dirR);
-            }
-            // Companion
-            if (companionActive) {
-                let dirC = dir.clone().applyAxisAngle(new THREE.Vector3(0,1,0), 0.35);
-                let dirCC = dir.clone().applyAxisAngle(new THREE.Vector3(0,1,0), -0.35);
-                createBullet(dirC);
-                createBullet(dirCC);
-            }
+    let roundReady = false;
+    function spawnWave() {
+        // Limpa inimigos antigos
+        for (let i = enemies.length - 1; i >= 0; i--) {
+            scene.remove(enemies[i]);
+            enemies.splice(i, 1);
+        }
+        // Aumenta dificuldade a cada wave
+        enemiesToSpawn = 3 + Math.floor(currentWave * 1.2);
+        for (let i = 0; i < enemiesToSpawn; i++) {
+            let angle = Math.random() * Math.PI * 2;
+            let radius = 13;
+            let x = Math.cos(angle) * radius;
+            let z = Math.sin(angle) * radius;
+            let enemyGeo = new THREE.SphereGeometry(1, 32, 32);
+            let enemyMat = new THREE.MeshPhongMaterial({ color: 0xc62828 });
+            let enemy = new THREE.Mesh(enemyGeo, enemyMat);
+            enemy.position.set(x, 1, z);
+            scene.add(enemy);
+            enemies.push(enemy);
+        }
+        enemiesAlive = enemiesToSpawn;
+        currentWave++;
+        roundInProgress = false;
+        roundReady = false;
+        setTimeout(() => { roundReady = true; roundInProgress = true; }, 400); // só começa após sprites aparecerem
     }
+    showRoundOverlay();
+    // ...existing code...
     // --- Three.js setup ---
     let scene = new THREE.Scene();
     let camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
@@ -443,21 +429,23 @@
         bacteria.position.z = Math.max(-14, Math.min(14, bacteria.position.z));
         camera.lookAt(bacteria.position);
 
-        // Movimento dos inimigos em direção à pessoa
-        let enemySpeed = 0.04 + wave * 0.01;
-        for (let i = enemies.length - 1; i >= 0; i--) {
-            let enemy = enemies[i];
-            let dir = new THREE.Vector3();
-            dir.subVectors(person.position, enemy.position).normalize();
-            enemy.position.x += dir.x * enemySpeed;
-            enemy.position.z += dir.z * enemySpeed;
-            // Checa se chegou na pessoa
-            let dist = enemy.position.distanceTo(person.position);
-            if (dist < 2) {
-                // Game over (pode melhorar depois)
-                alert('Game Over! O vírus alcançou a pessoa!');
-                window.location.reload();
-                return;
+        // Movimento dos inimigos em direção à pessoa só se roundReady
+        if (roundReady) {
+            let enemySpeed = 0.04 + wave * 0.01;
+            for (let i = enemies.length - 1; i >= 0; i--) {
+                let enemy = enemies[i];
+                let dir = new THREE.Vector3();
+                dir.subVectors(person.position, enemy.position).normalize();
+                enemy.position.x += dir.x * enemySpeed;
+                enemy.position.z += dir.z * enemySpeed;
+                // Checa se chegou na pessoa
+                let dist = enemy.position.distanceTo(person.position);
+                if (dist < 2) {
+                    // Game over (pode melhorar depois)
+                    alert('Game Over! O vírus alcançou a pessoa!');
+                    window.location.reload();
+                    return;
+                }
             }
         }
 
