@@ -42,7 +42,7 @@
             text-decoration: underline;
         }
         body {
-            background: #e0e0e0;
+            background: #181818;
             color: #e0e0e0;
             font-family: 'Gobold', Arial, sans-serif;
             text-align: center;
@@ -57,7 +57,7 @@
             left:0;
             height: 100%;
             width: 60px;
-            background-color: transparent;
+            background-color: #8c52ff;
             transition: width 0.3s ease;
             padding-top: 20px;
             z-index: 10;
@@ -74,13 +74,14 @@
             color: #e0e0e0;
             padding: 10px;
             text-align: center;
-            transition: background-color 0.3s ease;
-            opacity: 1; /* Corrigido para sempre visível */
+            transition: background-color 0.3s;
+            opacity: 1;
+            visibility: visible;
             font-size: 1em;
-            margin-top: 20%;
-            background: #8c52ff;
-            border-radius: 12px;
-            margin-bottom: 10px;
+            margin-top: 0;
+            background: transparent;
+            border-radius: 0;
+            margin-bottom: 0;
         }
         .sidebar ul li:hover {
             background-color: #232323;
