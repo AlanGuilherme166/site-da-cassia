@@ -4,7 +4,16 @@
     <meta charset="UTF-8">
     <title>Campo Minado Vírus</title>
     <style>
-        body { background: #181818; color: #e0e0e0; font-family: Arial, sans-serif; text-align: center; }
+        @font-face {
+            font-family: 'Gobold';
+            src: url('fontes/Gobold Regular.otf') format('opentype');
+            font-weight: normal;
+            font-style: normal;
+        }
+        body { background: #181818; color: #e0e0e0; font-family: 'Gobold', Arial, sans-serif; text-align: center; }
+        .sidebar, .sidebar ul li, .sidebar ul li span, #main-content, #minesweeper, #status, h1, h2, h3, h4, h5, h6, p, span, div, button, label, input, select, option {
+            font-family: 'Gobold', Arial, sans-serif !important;
+        }
         .sidebar { position: fixed; top: 0; left: 0; height: 100%; width: 60px; background-color: #121210; transition: width 0.3s; padding-top: 20px; z-index: 1001; overflow-x: hidden; }
         .sidebar:hover { width: 200px; }
         .sidebar ul { list-style: none; padding: 0; }

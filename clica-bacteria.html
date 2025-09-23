@@ -4,7 +4,24 @@
     <meta charset="UTF-8">
     <title>Clique na Bactéria!</title>
     <style>
-        body { background: #181818; color: #fff; font-family: Arial, sans-serif; text-align: center; }
+        .sidebar, .sidebar ul li, .sidebar ul li span, #main-content, #game-area, #score, h1, h2, h3, h4, h5, h6, p, span, div, button, label, input, select, option {
+            font-family: 'Gobold', Arial, sans-serif !important;
+        }
+        .sidebar { position: fixed; top: 0; left: 0; height: 100%; width: 60px; background-color: #121210; transition: width 0.3s; padding-top: 20px; z-index: 1001; overflow-x: hidden; }
+        .sidebar:hover { width: 200px; }
+        .sidebar ul { list-style: none; padding: 0; }
+        .sidebar ul li { color: #e0e0e0; padding: 15px; text-align: center; transition: background-color 0.3s; opacity: 1; cursor: pointer; }
+        .sidebar ul li:hover { background-color: #232323; }
+        .sidebar ul li span { opacity: 0; transition: opacity 0.3s; white-space: nowrap; margin-left: 10px; }
+        .sidebar:hover ul li span { opacity: 1; }
+        #main-content { margin-left: 70px; padding: 20px; }
+        @font-face {
+            font-family: 'Gobold';
+            src: url('fontes/Gobold Regular.otf') format('opentype');
+            font-weight: normal;
+            font-style: normal;
+        }
+        body { background: #181818; color: #fff; font-family: 'Gobold', Arial, sans-serif; text-align: center; }
         #game-area {
             width: 100vw;
             height: 100vh;
@@ -31,15 +48,28 @@
     </style>
 </head>
 <body>
-    <div id="score">Bactérias: <span id="score-value">0</span> | BPS: <span id="bps-value">0</span></div>
-    <div id="game-area">
-    <div id="bacteria"><img src="clica-bacteria-images/bacteria-verde.png" alt="Bactéria" style="width: 120px; height: 120px; user-select: none;"></div>
-        <div id="upgrades">
-            <h2>Upgrades</h2>
-            <button id="buy-cultivo">Comprar Cultivo (+1 BPS) - 15 🦠</button>
-            <span id="cultivo-count">0</span> Cultivos<br>
-            <button id="buy-lab">Comprar Laboratório (+10 BPS) - 150 🦠</button>
-            <span id="lab-count">0</span> Laboratórios
+    <div class="sidebar">
+        <ul>
+            <li onclick="window.location.href='dino-bio.html'">🦖<span>Quiz Biologia</span></li>
+            <li onclick="window.location.href='dino-jumper.html'">🦠<span>Bactéria Jumper</span></li>
+            <li onclick="window.location.href='campo-minado-virus.html'">🦠<span>Campo Minado Vírus</span></li>
+            <li onclick="window.location.href='jogo-da-velha.html'">🦠🦠<span>Jogo da Velha Bio</span></li>
+            <li onclick="window.location.href='jogo-tiro-bacteria.html'">🧫<span>Bactéria Atiradora</span></li>
+            <li onclick="window.location.href='clica-bacteria.html'">🦠<span>Clica Bactéria</span></li>
+            <li onclick="window.location.href='index.html'">🏠<span>Voltar ao Site</span></li>
+        </ul>
+    </div>
+    <div id="main-content">
+        <div id="score">Bactérias: <span id="score-value">0</span> | BPS: <span id="bps-value">0</span></div>
+        <div id="game-area">
+            <div id="bacteria"><img src="clica-bacteria-images/bacteria-verde.png" alt="Bactéria" style="width: 120px; height: 120px; user-select: none;"></div>
+            <div id="upgrades">
+                <h2>Upgrades</h2>
+                <button id="buy-cultivo">Comprar Cultivo (+1 BPS) - 15 🦠</button>
+                <span id="cultivo-count">0</span> Cultivos<br>
+                <button id="buy-lab">Comprar Laboratório (+10 BPS) - 150 🦠</button>
+                <span id="lab-count">0</span> Laboratórios
+            </div>
         </div>
     </div>
     <style>
@@ -51,6 +81,7 @@
             cursor: pointer;
             transition: transform 0.1s;
             user-select: none;
+            font-family: 'Gobold', Arial, sans-serif;
         }
         #bacteria:active { transform: scale(1.12); }
         #upgrades {
@@ -60,6 +91,7 @@
             box-shadow: 0 0 10px #000;
             margin-top: 20px;
             min-width: 260px;
+            font-family: 'Gobold', Arial, sans-serif;
         }
         #upgrades button {
             margin: 8px 0;
@@ -71,9 +103,13 @@
             color: #fff;
             cursor: pointer;
             transition: background 0.2s;
+            font-family: 'Gobold', Arial, sans-serif;
         }
         #upgrades button:disabled { background: #555; cursor: not-allowed; }
-        #upgrades span { font-weight: bold; margin: 0 8px; }
+        #upgrades span { font-weight: bold; margin: 0 8px; font-family: 'Gobold', Arial, sans-serif; }
+        #score, h2, h1, p, span, div, button, label, input, select, option {
+            font-family: 'Gobold', Arial, sans-serif !important;
+        }
     </style>
     <script>
     let score = 0;
