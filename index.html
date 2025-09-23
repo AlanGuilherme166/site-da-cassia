@@ -42,7 +42,7 @@
             text-decoration: underline;
         }
         body {
-            background: #181818;
+            background: #e0e0e0;
             color: #e0e0e0;
             font-family: 'Gobold', Arial, sans-serif;
             text-align: center;
@@ -53,11 +53,11 @@
         }
         .sidebar {
             position:fixed;
-            top:25%;
+            top:0;
             left:0;
-            height: 75%;
+            height: 100%;
             width: 60px;
-            background-color: #8c52ff;
+            background-color: transparent;
             transition: width 0.3s ease;
             padding-top: 20px;
             z-index: 10;
@@ -77,6 +77,10 @@
             transition: background-color 0.3s ease;
             opacity: 1; /* Corrigido para sempre visível */
             font-size: 1em;
+            margin-top: 20%;
+            background: #8c52ff;
+            border-radius: 12px;
+            margin-bottom: 10px;
         }
         .sidebar ul li:hover {
             background-color: #232323;
