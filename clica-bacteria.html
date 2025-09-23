@@ -21,7 +21,7 @@
             font-weight: normal;
             font-style: normal;
         }
-        body { background: #181818; color: #fff; font-family: 'Gobold', Arial, sans-serif; text-align: center; }
+    body { background: #181818; color: #fff; font-family: 'Gobold', Arial, sans-serif; text-align: center; font-size: 70%; }
         #game-area {
             width: 100vw;
             height: 100vh;
@@ -73,11 +73,11 @@
         </div>
     </div>
     <style>
-        #game-area { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; }
+        #game-area { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; font-size: 1em; }
         #bacteria {
             position: static;
-            font-size: 120px;
-            margin: 40px 0 20px 0;
+            font-size: 84px;
+            margin: 28px 0 14px 0;
             cursor: pointer;
             transition: transform 0.1s;
             user-select: none;
@@ -86,17 +86,18 @@
         #bacteria:active { transform: scale(1.12); }
         #upgrades {
             background: #232323;
-            padding: 18px 32px;
+            padding: 12px 22px;
             border-radius: 16px;
             box-shadow: 0 0 10px #000;
-            margin-top: 20px;
-            min-width: 260px;
+            margin-top: 14px;
+            min-width: 182px;
             font-family: 'Gobold', Arial, sans-serif;
+            font-size: 1em;
         }
         #upgrades button {
-            margin: 8px 0;
-            padding: 8px 18px;
-            font-size: 1rem;
+            margin: 6px 0;
+            padding: 6px 13px;
+            font-size: 0.7rem;
             border-radius: 8px;
             border: none;
             background: #388e3c;
@@ -106,9 +107,10 @@
             font-family: 'Gobold', Arial, sans-serif;
         }
         #upgrades button:disabled { background: #555; cursor: not-allowed; }
-        #upgrades span { font-weight: bold; margin: 0 8px; font-family: 'Gobold', Arial, sans-serif; }
+        #upgrades span { font-weight: bold; margin: 0 8px; font-family: 'Gobold', Arial, sans-serif; font-size: 1em; }
         #score, h2, h1, p, span, div, button, label, input, select, option {
             font-family: 'Gobold', Arial, sans-serif !important;
+            font-size: 1em;
         }
     </style>
     <script>

@@ -10,28 +10,28 @@
             font-weight: normal;
             font-style: normal;
         }
-        body { background: #181818; color: #e0e0e0; font-family: 'Gobold', Arial, sans-serif; text-align: center; }
+    body { background: #181818; color: #e0e0e0; font-family: 'Gobold', Arial, sans-serif; text-align: center; font-size: 70%; }
         .sidebar, .sidebar ul li, .sidebar ul li span, #main-content, #minesweeper, #status, h1, h2, h3, h4, h5, h6, p, span, div, button, label, input, select, option {
             font-family: 'Gobold', Arial, sans-serif !important;
         }
         .sidebar { position: fixed; top: 0; left: 0; height: 100%; width: 60px; background-color: #121210; transition: width 0.3s; padding-top: 20px; z-index: 1001; overflow-x: hidden; }
         .sidebar:hover { width: 200px; }
         .sidebar ul { list-style: none; padding: 0; }
-        .sidebar ul li { color: #e0e0e0; padding: 15px; text-align: center; transition: background-color 0.3s; opacity: 1; cursor: pointer; }
+    .sidebar ul li { color: #e0e0e0; padding: 10px; text-align: center; transition: background-color 0.3s; opacity: 1; cursor: pointer; font-size: 1em; }
         .sidebar ul li:hover { background-color: #232323; }
         .sidebar ul li span { opacity: 0; transition: opacity 0.3s; white-space: nowrap; margin-left: 10px; }
         .sidebar:hover ul li span { opacity: 1; }
-        #main-content { margin-left: 70px; padding: 20px; }
+    #main-content { margin-left: 70px; padding: 20px; font-size: 1em; }
         #minesweeper { display: inline-block; margin-top: 30px; }
         .row { display: flex; }
         .cell {
-            width: 32px; height: 32px; background: #232323; border: 1px solid #333;
-            color: #fff; font-size: 18px; text-align: center; line-height: 32px; cursor: pointer; user-select: none;
+            width: 22px; height: 22px; background: #232323; border: 1px solid #333;
+            color: #fff; font-size: 12px; text-align: center; line-height: 22px; cursor: pointer; user-select: none;
         }
         .cell.revealed { background: #181818; cursor: default; }
         .cell.virus { background: #b71c1c; }
         .cell.flag { background: #333; color: #ffeb3b; }
-        #status { margin-top: 20px; font-size: 18px; }
+        #status { margin-top: 20px; font-size: 12px; }
     </style>
 </head>
 <body>
