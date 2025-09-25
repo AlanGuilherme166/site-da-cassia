@@ -43,7 +43,6 @@
             font-size: 16px;
             cursor: pointer;
         }
-        /* Sidebar estilos */
         .sidebar {
             position: fixed;
             top: 0;
@@ -123,7 +122,6 @@
         </div>
     </div>
     <script>
-        // Confetti effect
         function confettiBurst() {
             const canvas = document.getElementById('confetti-canvas');
             const ctx = canvas.getContext('2d');
@@ -177,7 +175,6 @@
             animate();
         }
 
-        // X effect
         function showWrongX() {
             const x = document.getElementById('wrong-x');
             x.style.display = 'block';
@@ -186,9 +183,7 @@
             }, 800);
         }
 
-        // Sistema de níveis e perguntas do jogo
         const levels = [
-            // Nível 1 - Fundamental I (fácil)
             {
                 name: 'Nível 1 - Básico (Fundamental)',
                 questions: [
@@ -197,7 +192,6 @@
                     { q: 'Qual destes é essencial para as plantas realizarem fotossíntese?', o: ['Luz', 'Cimento', 'Ferro', 'Plástico'], a: 0 }
                 ]
             },
-            // Nível 2 - Fundamental II
             {
                 name: 'Nível 2 - Elementar (Fundamental)',
                 questions: [
@@ -206,7 +200,6 @@
                     { q: 'Qual é o sentido usado para ouvir?', o: ['Visão', 'Olfato', 'Audição', 'Paladar'], a: 2 }
                 ]
             },
-            // Nível 3 - Ensino Fundamental superior
             {
                 name: 'Nível 3 - Intermediário (Fundamental Superior)',
                 questions: [
@@ -215,7 +208,6 @@
                     { q: 'Qual é a principal molécula de armazenamento de energia nas células?', o: ['Água', 'ATP', 'DNA', 'Celulose'], a: 1 }
                 ]
             },
-            // Nível 4 - Ensino Médio (fácil)
             {
                 name: 'Nível 4 - Ensino Médio (Fácil)',
                 questions: [
@@ -224,7 +216,6 @@
                     { q: 'Qual é a unidade básica da hereditariedade?', o: ['Átomo', 'Molécula', 'Gene', 'Órgão'], a: 2 }
                 ]
             },
-            // Nível 5 - Ensino Médio (médio)
             {
                 name: 'Nível 5 - Ensino Médio (Médio)',
                 questions: [
@@ -233,7 +224,6 @@
                     { q: 'Qual é o principal gás liberado na respiração celular aeróbica?', o: ['Nitrogênio', 'Oxigênio', 'Dióxido de carbono', 'Hidrogênio'], a: 2 }
                 ]
             },
-            // Nível 6 - Ensino Médio (difícil)
             {
                 name: 'Nível 6 - Ensino Médio (Difícil)',
                 questions: [
@@ -242,7 +232,6 @@
                     { q: 'Qual molécula carrega aminoácidos até o ribossomo?', o: ['tRNA', 'mRNA', 'rRNA', 'DNA'], a: 0 }
                 ]
             },
-            // Nível 7 - Início de faculdade (biologia básica)
             {
                 name: 'Nível 7 - Graduação (Introdução)',
                 questions: [
@@ -251,7 +240,6 @@
                     { q: 'Em qual organelo ocorre a síntese proteica ligada à membrana?', o: ['Ribossomo livre', 'Retículo endoplasmático rugoso', 'Mitocôndria', 'Lisossomo'], a: 1 }
                 ]
             },
-            // Nível 8 - Faculdade (médio)
             {
                 name: 'Nível 8 - Graduação (Intermediário)',
                 questions: [
@@ -260,7 +248,6 @@
                     { q: 'Qual processo corresponde à tradução?', o: ['síntese de proteínas a partir de mRNA', 'replicação de DNA', 'transcrição de DNA para RNA', 'degradação de proteínas'], a: 0 }
                 ]
             },
-            // Nível 9 - Faculdade (difícil)
             {
                 name: 'Nível 9 - Graduação (Avançado)',
                 questions: [
@@ -269,7 +256,6 @@
                     { q: 'Qual técnica permite visualizar proteínas separadas por tamanho?', o: ['PCR', 'Eletroforese em gel', 'Sequenciamento de DNA', 'Microscopia eletrônica'], a: 1 }
                 ]
             },
-            // Nível 10 - Faculdade (muito difícil / pós-graduação introdutório)
             {
                 name: 'Nível 10 - Pós/Avançado',
                 questions: [
@@ -279,7 +265,6 @@
                 ]
             }
             ,
-            // Nível 11 - Pós/Avançado 2
             {
                 name: 'Nível 11 - Pós/Avançado II',
                 questions: [
@@ -288,7 +273,6 @@
                     { q: 'O que é splicing alternativo?', o: ['Mecanismo de reparo de DNA', 'Remoção de introns permitindo diferentes isoformas de proteínas', 'Processo de tradução', 'Movimento celular'], a: 1 }
                 ]
             },
-            // Nível 12 - Especializado
             {
                 name: 'Nível 12 - Especializado',
                 questions: [
@@ -297,7 +281,6 @@
                     { q: 'O que define um gene essencial?', o: ['Um gene com expressão baixa', 'Um gene sem promotor', 'Um gene cuja perda resulta em inviabilidade', 'Um gene duplicado'], a: 2 }
                 ]
             },
-            // Nível 13 - Avançado II
             {
                 name: 'Nível 13 - Avançado II',
                 questions: [
@@ -306,7 +289,6 @@
                     { q: 'Que tipo de ligação estabiliza a estrutura secundária das proteínas?', o: ['Ligação iônica', 'Ponte de hidrogênio', 'Ligação covalente simples', 'Ligação peptídica'], a: 1 }
                 ]
             },
-            // Nível 14 - Pesquisa
             {
                 name: 'Nível 14 - Pesquisa',
                 questions: [
@@ -315,7 +297,6 @@
                     { q: 'Qual abordagem é usada para estudar interação proteína-proteína?', o: ['ELISA', 'Co-imunoprecipitação (Co-IP)', 'PCR', 'Southern blot'], a: 1 }
                 ]
             },
-            // Nível 15 - Tópicos avançados
             {
                 name: 'Nível 15 - Tópicos Avançados',
                 questions: [
@@ -330,19 +311,14 @@
         let currentQuestion = 0;
         let levelScore = 0;
         let totalScore = 0;
-
-        // Elementos de interface adicionais
         const questionEl = document.getElementById('question');
         const optionsEl = document.getElementById('options');
         const resultEl = document.getElementById('result');
-
-        // criar display do nível e botão avançar
         const levelHeader = document.createElement('div');
         levelHeader.id = 'level-header';
         levelHeader.style.marginBottom = '10px';
         levelHeader.style.fontWeight = 'bold';
         document.getElementById('game').insertBefore(levelHeader, questionEl);
-
         const nextLevelBtn = document.createElement('button');
         nextLevelBtn.textContent = 'Avançar para o próximo nível';
         nextLevelBtn.className = 'back-btn';
@@ -350,7 +326,6 @@
         nextLevelBtn.onclick = () => {
             currentLevel++;
             if (currentLevel >= levels.length) {
-                // terminou todos os níveis
                 questionEl.textContent = 'Parabéns — você completou todos os níveis!';
                 optionsEl.innerHTML = '';
                 resultEl.textContent = `Pontuação total: ${totalScore}`;
@@ -375,7 +350,6 @@
             const level = levels[currentLevel];
             if (!level) return;
             if (currentQuestion >= level.questions.length) {
-                // nível concluído
                 totalScore += levelScore;
                 questionEl.textContent = `Nível concluído: ${level.name}`;
                 optionsEl.innerHTML = '';
@@ -399,12 +373,9 @@
                 btn.textContent = opt;
                 btn.className = 'option';
                 btn.onclick = () => {
-                    if (answered) return; // prevenir múltiplos cliques
+                    if (answered) return;
                     answered = true;
-
-                    // esconder imediatamente as alternativas para evitar cliques acidentais
                     Array.from(optionsEl.children).forEach(b => b.style.display = 'none');
-
                     if (i === q.a) {
                         levelScore++;
                         resultEl.textContent = 'Correto!';
@@ -416,7 +387,6 @@
                     currentQuestion++;
                     setTimeout(() => {
                         resultEl.textContent = '';
-                        // restaurar display das alternativas antes da próxima pergunta
                         optionsEl.style.display = '';
                         showQuestion();
                     }, 1000);
@@ -425,8 +395,7 @@
             });
         }
 
-        // iniciar no nível 0
-        loadLevel(0);
+    loadLevel(0);
     </script>
 </body>
 </html>

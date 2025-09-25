@@ -60,7 +60,7 @@
         let gravity = -1.2;
         let isOnGround = true;
 
-        // Deixa o obstáculo um pouco mais rápido
+        
         let obstacleSpeed = 5.5; // valor aumentado
 
         function jump() {
@@ -82,7 +82,7 @@
                 obstaclePos = 400 + Math.random() * 100;
                 score++;
                 scoreValue.textContent = score;
-                // Aumenta a velocidade a cada 5 pontos
+                
                 if (score % 5 === 0 && obstacleSpeed < 8) obstacleSpeed += 0.4;
             }
             obstacle.style.right = (400 - obstaclePos) + 'px';
@@ -102,13 +102,13 @@
                 bacteria.style.bottom = bacteriaBottom + 'px';
             }
             moveObstacle();
-            // Colisão precisa usando bounding box
+            
             const bacteriaRect = bacteria.getBoundingClientRect();
             const obstacleRect = obstacle.getBoundingClientRect();
-            // Ajusta para o game-area
+            
             const gameArea = document.getElementById('game-area');
             const gameRect = gameArea.getBoundingClientRect();
-            // Corrige as posições relativas
+            
             const bacteriaBox = {
                 left: bacteriaRect.left - gameRect.left,
                 right: bacteriaRect.right - gameRect.left,
@@ -121,7 +121,7 @@
                 top: obstacleRect.top - gameRect.top,
                 bottom: obstacleRect.bottom - gameRect.top
             };
-            // Checa colisão
+            
             if (
                 bacteriaBox.right > obstacleBox.left &&
                 bacteriaBox.left < obstacleBox.right &&

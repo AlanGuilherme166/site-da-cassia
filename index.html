@@ -139,16 +139,15 @@
         <header>
             <nav>
                 <ul>
-                    <li><a href="#">Início</a></li>
                     <li><a href="#">Sobre</a></li>
-                    <li><a href="#">Serviços</a></li>
+                    <li><a href="#">Atendimento</a></li>
                     <li><a href="#">Contatos</a></li>
                 </ul>
             </nav>
         </header>
         <div class="sidebar">
             <ul>
-                <li><span>Jogos</span></li>
+                <li id="jogos-btn" style="cursor:pointer;"><span>Jogos</span></li>
                 <li id="calc-btn" style="cursor:pointer;"><span>Calculadoras</span></li>
                 <li><span>Biologia</span></li>
                 <li id="bacteria3d-btn" style="cursor:pointer;"><span>Modelo 3D molécula</span></li>
@@ -156,7 +155,7 @@
         </div>
         <div class="content">
         </div>
-                <!-- Modal para mostrar o modelo 3D embutido (Sketchfab) -->
+                
                 <div class="modal fade" id="sketchfabModal" tabindex="-1" aria-labelledby="sketchfabModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-xl modal-dialog-centered">
                         <div class="modal-content bg-dark">
@@ -177,12 +176,12 @@
                 </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
         <script>
-            // Corrige o clique na logo para abrir o quiz em uma nova aba
+            document.getElementById('jogos-btn').onclick = function() {
+                window.location.href = 'dino-bio.html';
+            };
             document.getElementById('logo-biomundo').onclick = function() {
                 window.open('dino-bio.html', '_blank');
             };
-
-            // Corrige a calculadora para funcionar corretamente
             document.getElementById('calc-btn').onclick = function() {
                 const calcWindow = window.open('', 'Calculadora', 'width=320,height=480');
                 calcWindow.document.write(`
@@ -245,8 +244,6 @@
                     </html>
                 `);
             };
-
-            // Botão para abrir o modal com o modelo 3D embutido (Sketchfab)
             (function() {
                 const btn = document.getElementById('bacteria3d-btn');
                 const iframe = document.getElementById('sketchfab-iframe');
@@ -256,13 +253,11 @@
 
                 btn.addEventListener('click', function() {
                     if (iframe) {
-                        // Inserir o src do embed fornecido pelo usuário
+                        
                         iframe.src = 'https://sketchfab.com/models/26403e678a6043a890f51503ac283478/embed';
                     }
                     if (bsModal) bsModal.show();
                 });
-
-                // Ao fechar o modal, limpar o src para parar o modelo e áudio
                 modalEl.addEventListener('hidden.bs.modal', function() {
                     if (iframe) iframe.src = '';
                 });

@@ -98,11 +98,10 @@
             if (gameOver) return;
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            // Move bactéria
             if (keys['ArrowUp'] && bacteria.y > 0) bacteria.y -= 3;
             if (keys['ArrowDown'] && bacteria.y < canvas.height - bacteria.h) bacteria.y += 3;
 
-            // Desenha bactéria (verde)
+            
             ctx.fillStyle = bacteria.color;
             ctx.beginPath();
             ctx.ellipse(bacteria.x + 15, bacteria.y + 15, 15, 15, 0, 0, Math.PI * 2);
@@ -110,16 +109,13 @@
             ctx.strokeStyle = "#284721";
             ctx.stroke();
 
-            // Desenha bullets
             ctx.fillStyle = "#fff";
             bullets.forEach((b, i) => {
                 b.x += 5;
                 ctx.fillRect(b.x, b.y, 8, 3);
-                // Remove se sair da tela
                 if (b.x > canvas.width) bullets.splice(i, 1);
             });
 
-            // Desenha vírus (vermelho)
             viruses.forEach((v, vi) => {
                 v.x -= v.speed;
                 ctx.fillStyle = v.color;
@@ -129,7 +125,6 @@
                 ctx.strokeStyle = "#b71c1c";
                 ctx.stroke();
 
-                // Colisão com bactéria
                 if (
                     v.x < bacteria.x + bacteria.w &&
                     v.x + v.w > bacteria.x &&
@@ -143,7 +138,6 @@
                     return;
                 }
 
-                // Colisão com tiro
                 bullets.forEach((b, bi) => {
                     if (
                         b.x < v.x + v.w &&
@@ -159,7 +153,6 @@
                 });
             });
 
-            // Remove vírus fora da tela
             viruses = viruses.filter(v => v.x + v.w > 0);
 
             if (!gameOver) requestAnimationFrame(animate);
@@ -168,7 +161,6 @@
         document.addEventListener('keydown', function(e) {
             keys[e.key] = true;
             if (e.key === ' ' && !gameOver) {
-                // Atira
                 bullets.push({ x: bacteria.x + bacteria.w, y: bacteria.y + bacteria.h / 2 - 1, w: 8, h: 3 });
             }
         });

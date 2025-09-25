@@ -62,7 +62,7 @@
             flagged = Array.from({length: rows}, () => Array(cols).fill(false));
             gameOver = false;
             cellsRevealed = 0;
-            // Coloca vírus
+            
             let placed = 0;
             while (placed < viruses) {
                 let r = Math.floor(Math.random() * rows);
@@ -72,7 +72,7 @@
                     placed++;
                 }
             }
-            // Números ao redor
+            
             for (let r = 0; r < rows; r++) {
                 for (let c = 0; c < cols; c++) {
                     if (board[r][c] === 'V') continue;
@@ -125,13 +125,13 @@
             if (board[r][c] === 'V') {
                 gameOver = true;
                 document.getElementById('status').textContent = 'Você perdeu! Era um vírus!';
-                // Revela tudo
+                
                 for (let i = 0; i < rows; i++) for (let j = 0; j < cols; j++) revealed[i][j] = true;
                 render();
                 return;
             }
             if (board[r][c] === 0) {
-                // Revela vizinhos
+            
                 for (let dr = -1; dr <= 1; dr++) {
                     for (let dc = -1; dc <= 1; dc++) {
                         let nr = r + dr, nc = c + dc;
