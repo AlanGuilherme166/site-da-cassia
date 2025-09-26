@@ -22,11 +22,6 @@ nav {
     background: #020002;
     height: 9vh;
 }
-@font-face {
-            font-family: 'Gobold';
-            src: url('fontes/Gobold Regular.otf') format('opentype');
-            font-weight: normal;
-            font-style: normal;
 main {
     background: url(images/leaf-hand-drawn-simple-abstract-seamless-pattern-background-free-vector.jpg) no-repeat 
     center center ;
@@ -41,4 +36,10 @@ main {
 .nav-list li {
     letter-spacing: 3px;
     margin-left: 32px;
+}
+@font-face {
+            font-family: 'Gobold';
+            src: url('fontes/Gobold Regular.otf') format('opentype');
+            font-weight: normal;
+            font-style: normal;
 }
