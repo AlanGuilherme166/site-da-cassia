@@ -27,12 +27,13 @@ main {
     background: url(images/leaf-hand-drawn-simple-abstract-seamless-pattern-background-free-vector.jpg) no-repeat 
     center center ;
     background-size: cover;
-    height: 92vh;
+    height: 90vh;
 }
 .nav-list {
     list-style: none;
     display: flex;
 }
+
 .nav-list li {
     letter-spacing: 3px;
     margin-left: 32px;
