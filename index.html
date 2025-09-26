@@ -185,9 +185,15 @@
             };
             document.getElementById('calc-btn').onclick = function() {
                 const calcWindow = window.open('', 'Calculadora', 'width=320,height=480');
-                calcWindow.document.write(`
+                const html = `
                     <html>
-                    <!-- header removido -->
+                    <head>
+                        <title>Calculadora</title>
+                        <style>
+                            body { background: #222; color: #fff; font-family: Arial, sans-serif; text-align: center; }
+                            #calc { margin: 30px auto; width: 260px; background: #333; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px #000; }
+                            #display { width: 220px; height: 40px; font-size: 1.5em; margin-bottom: 10px; text-align: right; background: #181818; color: #fff; border: 1px solid #333; border-radius: 5px; }
+                            button { width: 50px; height: 50px; margin: 3px; font-size: 1.2em; border: none; border-radius: 5px; background: #4caf50; color: #fff; transition: background 0.2s; }
                             button:hover { background: #388e3c; }
                         </style>
                     </head>
@@ -195,73 +201,84 @@
                         <div id="calc">
                             <input type="text" id="display" disabled><br>
                             <div>
-                                <button onclick="add('7')">7</button>
-                                <button onclick="add('8')">8</button>
-                                <button onclick="add('9')">9</button>
-                                <button onclick="add('/')">÷</button>
+                                <button data-val="7">7</button>
+                                <button data-val="8">8</button>
+                                <button data-val="9">9</button>
+                                <button data-val="/">÷</button>
                             </div>
                             <div>
-                                <button onclick="add('4')">4</button>
-                                <button onclick="add('5')">5</button>
-                                <button onclick="add('6')">6</button>
-                                <button onclick="add('*')">×</button>
+                                <button data-val="4">4</button>
+                                <button data-val="5">5</button>
+                                <button data-val="6">6</button>
+                                <button data-val="*">×</button>
                             </div>
                             <div>
-                                <button onclick="add('1')">1</button>
-                                <button onclick="add('2')">2</button>
-                                <button onclick="add('3')">3</button>
-                                <button onclick="add('-')">-</button>
+                                <button data-val="1">1</button>
+                                <button data-val="2">2</button>
+                                <button data-val="3">3</button>
+                                <button data-val="-">-</button>
                             </div>
                             <div>
-                                <button onclick="add('0')">0</button>
-                                <button onclick="add('.')">.</button>
-                                <button onclick="calculate()">=</button>
-                                <button onclick="add('+')">+</button>
+                                <button data-val="0">0</button>
+                                <button data-val=".">.</button>
+                                <button id="equals">=</button>
+                                <button data-val="+">+</button>
                             </div>
                             <div>
-                                <button onclick="clearDisplay()" style="width: 220px; background: #c62828;">C</button>
+                                <button id="clear" style="width: 220px; background: #c62828;">C</button>
                             </div>
                         </div>
                         <script>
-                            let display = null;
-                            window.onload = function() {
-                                display = document.getElementById('display');
+                        window.onload = function() {
+                            const display = document.getElementById('display');
+                            const buttons = document.querySelectorAll('button[data-val]');
+                            const equals = document.getElementById('equals');
+                            const clear = document.getElementById('clear');
+                            buttons.forEach(btn => {
+                                btn.onclick = function() {
+                                    display.value += btn.getAttribute('data-val');
+                                };
+                            });
+                            equals.onclick = function() {
+                                try {
+                                    display.value = eval(display.value);
+                                } catch {
+                                    display.value = 'Erro';
+                                }
                             };
-                            function add(val) {
-                                if (!display) display = document.getElementById('display');
-                                display.value += val;
-                            }
-                            function calculate() {
-                                if (!display) display = document.getElementById('display');
-                                try { display.value = eval(display.value); }
-                                catch { display.value = 'Erro'; }
-                            }
-                            function clearDisplay() {
-                                if (!display) display = document.getElementById('display');
+                            clear.onclick = function() {
                                 display.value = '';
-                            }
+                            };
+                        };
                         <\/script>
                     </body>
                     </html>
-                `);
+                `;
+                calcWindow.document.write(html);
+                calcWindow.document.close();
             };
             (function() {
                 const btn = document.getElementById('bacteria3d-btn');
                 const iframe = document.getElementById('sketchfab-iframe');
                 const modalEl = document.getElementById('sketchfabModal');
                 let bsModal = null;
-                if (modalEl) bsModal = new bootstrap.Modal(modalEl);
-
-                btn.addEventListener('click', function() {
+                function openModal() {
+                    if (!bsModal && window.bootstrap && modalEl) {
+                        bsModal = new bootstrap.Modal(modalEl);
+                    }
                     if (iframe) {
-                        
                         iframe.src = 'https://sketchfab.com/models/26403e678a6043a890f51503ac283478/embed';
                     }
                     if (bsModal) bsModal.show();
-                });
-                modalEl.addEventListener('hidden.bs.modal', function() {
-                    if (iframe) iframe.src = '';
-                });
+                }
+                if (btn) {
+                    btn.addEventListener('click', openModal);
+                }
+                if (modalEl) {
+                    modalEl.addEventListener('hidden.bs.modal', function() {
+                        if (iframe) iframe.src = '';
+                    });
+                }
             })();
         </script>
     </body>
