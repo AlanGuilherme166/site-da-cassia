@@ -1,0 +1,127 @@
+@font-face {
+            font-family: 'Gobold';
+            src: url('../fontes/Gobold Regular.otf') format('opentype');
+            font-weight: normal;
+            font-style: normal;
+        }
+        header {
+            background: #210027;
+            color: white;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-left: 50px;
+            height: 100px;
+            transition: margin-left 0.3s ease;
+            font-family: 'Gobold', 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', sans-serif;
+            position: relative;
+            overflow: visible;
+        }
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+            margin: 0;
+            padding: 0;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        nav a:hover{
+            text-decoration: underline;
+        }
+        body {
+            background: #e0e0e0;
+            color: #181818;
+            font-family: 'Gobold', Arial, sans-serif;
+            text-align: center;
+            font-size: 84%;
+        }
+        .sidebar, .sidebar ul li, .sidebar ul li span, #main-content, #game, .content, #score, .option, button, label, input, select, option, h1, h2, h3, h4, h5, h6, p, span, div {
+            font-family: 'Gobold', Arial, sans-serif !important;
+        }
+        .sidebar {
+            position:fixed;
+            top:0;
+            left:0;
+            height: 100%;
+            width: 60px;
+            background-color: #020002;
+            transition: width 0.3s ease;
+            padding-top: 20px;
+            z-index: 10;
+            overflow-x: hidden;
+        }
+        .sidebar:hover {
+            width: 200px;
+        }
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+        .sidebar ul li {
+            color: #e0e0e0;
+            padding: 10px;
+            text-align: center;
+            transition: background-color 0.3s;
+            opacity: 1;
+            visibility: visible;
+            font-size: 1em;
+            margin-top: 0;
+            background: transparent;
+            border-radius: 0;
+            margin-bottom: 0;
+        }
+        .sidebar ul li:hover {
+            background-color: #232323;
+            cursor: pointer;
+        }
+        .sidebar ul li span {
+            opacity: 0;
+            transition: opacity 0.3s;
+            white-space: nowrap;
+        }
+        .sidebar:hover ul li span {
+            opacity: 1;
+        }
+        .content {
+            margin-left: 70px;
+            padding: 20px;
+            font-size: 1em;
+        }
+        #main-content, #game {
+            background: #fff;
+            color: #181818;
+            border-radius: 10px;
+            box-shadow: 0 0 10px #000;
+            font-size: 1em;
+        }
+        button, .option {
+            background: #222;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+        button:hover, .option:hover {
+            background: #333;
+        }
+        input[type="text"] {
+            background: #181818;
+            color: #fff;
+            border: 1px solid #333;
+            font-size: 1em;
+        }
+        h1 {
+            text-align: left;
+            margin-left: 0;
+            font-size: 1.7em;
+        }
+        .content p {
+            text-align: left;
+            margin-left: 0;
+            font-size: 1em;
+        }
