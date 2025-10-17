@@ -72,27 +72,30 @@
         <div id="score">Bactérias: <span id="score-value">0</span> | BPS: <span id="bps-value">0</span> | Por clique: <span id="click-value">1</span></div>
         <div id="game-area">
             <div id="bacteria"><img src="clica-bacteria-images/bacteria-verde.png" alt="Bactéria" style="width: 120px; height: 120px; user-select: none;"></div>
-                <div id="confetti-container" aria-hidden="true"></div>
-                <div id="upgrades">
-                    <h2 style="color: #fff;">Upgrades</h2>
-                    <div class="upgrade-column" id="bps-upgrades">
-                        <h3 style="color:#fff; margin-bottom:6px;">Produção (BPS)</h3>
-                        <button id="buy-cultivo">Comprar Cultivo (+1 BPS) - 15 🦠</button>
-                        <span id="cultivo-emoji" class="item-emoji">🧫 × <span id="cultivo-count" style="color: #fff;">0</span></span><br>
-                        <button id="buy-lab">Comprar Laboratório (+10 BPS) - 150 🦠</button>
-                        <span id="lab-emoji" class="item-emoji">🧪 × <span id="lab-count" style="color: #fff;">0</span></span><br>
-                        <button id="buy-quantum">Comprar Laboratório Quântico (+100 BPS) - 1500 🦠</button>
-                        <span id="quantum-emoji" class="item-emoji">⚛️ × <span id="quantum-count" style="color: #fff;">0</span></span>
-                    </div>
-                    <div class="upgrade-column" id="click-upgrades" style="margin-top:10px;">
-                        <h3 style="color:#fff; margin-bottom:6px;">Melhorias do Clique</h3>
-                        <button id="buy-farm1">Comprar Fazenda (+1 por clique) - 1000 🦠</button>
-                        <span id="farm1-emoji" class="item-emoji">🌾 × <span id="farm1-count" style="color: #fff;">0</span></span><br>
-                        <button id="buy-farm2">Comprar Grande Fazenda (+5 por clique) - 5000 🦠</button>
-                        <span id="farm2-emoji" class="item-emoji">🚜 × <span id="farm2-count" style="color: #fff;">0</span></span><br>
-                        <button id="buy-farm3">Comprar Mega Fazenda (+20 por clique) - 20000 🦠</button>
-                        <span id="farm3-emoji" class="item-emoji">🏭 × <span id="farm3-count" style="color: #fff;">0</span></span>
-                    </div>
+            <div id="confetti-container" aria-hidden="true"></div>
+            <div id="upgrades">
+                <h2 style="color: #fff;">Upgrades</h2>
+                <div class="upgrade-column" id="bps-upgrades">
+                    <h3 style="color:#fff; margin-bottom:6px;">Produção (BPS)</h3>
+                    <button id="buy-cultivo">Comprar Cultivo (+1 BPS) - 15 🦠</button>
+                    <span id="cultivo-emoji" class="item-emoji">🧫 × <span id="cultivo-count" style="color: #fff;">0</span></span><br>
+                    <button id="buy-lab">Comprar Laboratório (+10 BPS) - 150 🦠</button>
+                    <span id="lab-emoji" class="item-emoji">🧪 × <span id="lab-count" style="color: #fff;">0</span></span><br>
+                    <button id="buy-quantum">Comprar Laboratório Quântico (+100 BPS) - 1500 🦠</button>
+                    <span id="quantum-emoji" class="item-emoji">⚛️ × <span id="quantum-count" style="color: #fff;">0</span></span><br>
+                    <button id="buy-colony">Comprar Colônia (+1000 BPS) - 15000 🦠</button>
+                    <span id="colony-emoji" class="item-emoji">🏘️ × <span id="colony-count" style="color: #fff;">0</span></span><br>
+                    <button id="buy-big-colony">Comprar Grande Colônia (+10000 BPS) - 150000 🦠</button>
+                    <span id="big-colony-emoji" class="item-emoji">🏯 × <span id="big-colony-count" style="color: #fff;">0</span></span>
+                </div>
+                <div class="upgrade-column" id="click-upgrades" style="margin-top:10px;">
+                    <h3 style="color:#fff; margin-bottom:6px;">Melhorias do Clique</h3>
+                    <button id="buy-farm1">Comprar Fazenda (+1 por clique) - 1000 🦠</button>
+                    <span id="farm1-emoji" class="item-emoji">🌾 × <span id="farm1-count" style="color: #fff;">0</span></span><br>
+                    <button id="buy-farm2">Comprar Grande Fazenda (+5 por clique) - 5000 🦠</button>
+                    <span id="farm2-emoji" class="item-emoji">🚜 × <span id="farm2-count" style="color: #fff;">0</span></span><br>
+                    <button id="buy-farm3">Comprar Mega Fazenda (+20 por clique) - 20000 🦠</button>
+                    <span id="farm3-emoji" class="item-emoji">🏭 × <span id="farm3-count" style="color: #fff;">0</span></span>
                 </div>
             </div>
         </div>
@@ -177,16 +180,45 @@
             position: absolute;
             top: -10vh;
             will-change: transform, opacity;
-            pointer-events: none;
+            pointer-events: auto;
             opacity: 0.95;
             text-shadow: 0 1px 2px rgba(0,0,0,0.6);
             animation-name: bact-fall;
             animation-timing-function: linear;
             animation-iteration-count: infinite;
+            cursor: pointer;
+            user-select: none;
+        }
+        .falling-bact.red {
+            filter: drop-shadow(0 0 6px rgba(255,50,50,0.9));
+            transform-origin: center;
+        }
+        .falling-bact.popped {
+            animation: none !important;
+            transform: scale(1.6);
+            opacity: 0;
+            transition: transform 0.25s ease-out, opacity 0.25s ease-out;
+        }
+        .float-reward {
+            position: absolute;
+            color: #e8ffea;
+            font-weight: 800;
+            text-shadow: 0 2px 6px rgba(0,0,0,0.6);
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            font-size: 14px;
+            z-index: 1002;
+            opacity: 1;
+            transition: transform 0.9s ease-out, opacity 0.9s ease-out;
+        }
+        .float-reward.rare {
+            color: #ffdddd;
+            font-size: 16px;
+            text-shadow: 0 2px 8px rgba(255,50,50,0.9);
         }
         @keyframes bact-fall {
-            0% { transform: translateY(-10vh); opacity: 0.9; }
-            100% { transform: translateY(110vh); opacity: 0.95; }
+            0% { transform: translateY(-10vh) rotate(0deg); opacity: 0.9; }
+            100% { transform: translateY(110vh) rotate(360deg); opacity: 0.95; }
         }
     </style>
     <script>
@@ -195,6 +227,8 @@
     let cultivo = 0;
     let lab = 0;
     let quantum = 0;
+    let colony = 0;
+    let bigColony = 0;
     let farm1 = 0;
     let farm2 = 0;
     let farm3 = 0;
@@ -205,19 +239,24 @@
     const cultivoCount = document.getElementById('cultivo-count');
     const labCount = document.getElementById('lab-count');
     const quantumCount = document.getElementById('quantum-count');
+    const colonyCount = document.getElementById('colony-count');
+    const bigColonyCount = document.getElementById('big-colony-count');
     const farm1Count = document.getElementById('farm1-count');
     const farm2Count = document.getElementById('farm2-count');
     const farm3Count = document.getElementById('farm3-count');
     const buyCultivo = document.getElementById('buy-cultivo');
     const buyLab = document.getElementById('buy-lab');
     const buyQuantum = document.getElementById('buy-quantum');
+    const buyColony = document.getElementById('buy-colony');
+    const buyBigColony = document.getElementById('buy-big-colony');
     const buyFarm1 = document.getElementById('buy-farm1');
     const buyFarm2 = document.getElementById('buy-farm2');
     const buyFarm3 = document.getElementById('buy-farm3');
     const bacteria = document.getElementById('bacteria');
     const confettiContainer = document.getElementById('confetti-container');
     const CONFETTI_MAX = 40;
-    const BPS_PER_CONFETTI = 100000 / CONFETTI_MAX;
+    const BPS_FOR_MAX = 100000;
+    const BPS_PER_CONFETTI = Math.max(1, Math.floor(BPS_FOR_MAX / CONFETTI_MAX));
     function updateUI() {
         scoreValue.textContent = Math.floor(score);
         bpsValue.textContent = bps;
@@ -225,12 +264,16 @@
         cultivoCount.textContent = cultivo;
         labCount.textContent = lab;
         quantumCount.textContent = quantum;
+        colonyCount.textContent = colony;
+        bigColonyCount.textContent = bigColony;
         farm1Count.textContent = farm1;
         farm2Count.textContent = farm2;
         farm3Count.textContent = farm3;
         buyCultivo.disabled = score < 15;
         buyLab.disabled = score < 150;
         buyQuantum.disabled = score < 1500;
+        buyColony.disabled = score < 15000;
+        buyBigColony.disabled = score < 150000;
         buyFarm1.disabled = score < 1000;
         buyFarm2.disabled = score < 5000;
         buyFarm3.disabled = score < 20000;
@@ -264,6 +307,22 @@
             updateUI();
         }
     };
+    buyColony.onclick = function() {
+        if (score >= 15000) {
+            score -= 15000;
+            colony++;
+            bps += 1000;
+            updateUI();
+        }
+    };
+    buyBigColony.onclick = function() {
+        if (score >= 150000) {
+            score -= 150000;
+            bigColony++;
+            bps += 10000;
+            updateUI();
+        }
+    };
     buyFarm1.onclick = function() {
         if (score >= 1000) {
             score -= 1000;
@@ -288,19 +347,54 @@
             updateUI();
         }
     };
+    function randomInt(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
     function createConfetti() {
         const el = document.createElement('div');
         el.className = 'falling-bact';
+        const isRare = Math.random() < 0.01;
+        if (isRare) el.classList.add('red');
         el.textContent = '🦠';
         el.style.left = (Math.random() * 100) + '%';
         el.style.fontSize = (12 + Math.random() * 26) + 'px';
         el.style.animationDuration = (4 + Math.random() * 6) + 's';
         el.style.animationDelay = (Math.random() * 3) + 's';
         el.style.zIndex = 1;
+        const reward = isRare ? randomInt(10000, 1000000) : randomInt(100, 1000);
+        el.dataset.reward = reward;
+        el.dataset.rare = isRare ? '1' : '0';
+        el.addEventListener('click', function(e) {
+            e.stopPropagation();
+            if (el.classList.contains('popped')) return;
+            el.classList.add('popped');
+            const rect = confettiContainer.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const value = parseInt(el.dataset.reward, 10) || 0;
+            score += value;
+            updateUI();
+            const floatEl = document.createElement('div');
+            floatEl.className = 'float-reward' + (el.dataset.rare === '1' ? ' rare' : '');
+            floatEl.textContent = (el.dataset.rare === '1' ? '🔥+' : '+') + value.toLocaleString('pt-BR');
+            floatEl.style.left = x + 'px';
+            floatEl.style.top = y + 'px';
+            confettiContainer.appendChild(floatEl);
+            requestAnimationFrame(() => {
+                floatEl.style.transform = 'translate(-50%, -150%)';
+                floatEl.style.opacity = '0';
+            });
+            setTimeout(() => {
+                if (floatEl.parentNode) floatEl.remove();
+            }, 1000);
+            setTimeout(() => {
+                if (el.parentNode) el.remove();
+            }, 260);
+        });
         confettiContainer.appendChild(el);
     }
     function updateConfettiPool() {
-        const desired = Math.min(CONFETTI_MAX, Math.floor(bps / Math.max(1, Math.floor(BPS_PER_CONFETTI))));
+        const desired = Math.min(CONFETTI_MAX, Math.floor(bps / Math.max(1, BPS_PER_CONFETTI)));
         const current = confettiContainer.querySelectorAll('.falling-bact').length;
         if (current < desired) {
             for (let i = 0; i < desired - current; i++) createConfetti();
