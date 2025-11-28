@@ -132,8 +132,7 @@
             padding: 36px 40px;
             margin: 36px auto;
             height: 260px;
-            width: 730px;
-            max-width: 920px;
+            width: auto;
             display: flex;
             align-items: center;
             justify-content: center;
