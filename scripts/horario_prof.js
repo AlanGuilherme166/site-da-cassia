@@ -36,7 +36,7 @@ function montarQuadroHorarios(csvText) {
   }
 }
 
-fetch('../assets/horario/horarios.csv')
+fetch('assets/horario/horarios.csv')
     .then(r => r.text())
     .then(text => montarQuadroHorarios(text))
     .catch(err => console.error('Erro ao carregar CSV', err));
