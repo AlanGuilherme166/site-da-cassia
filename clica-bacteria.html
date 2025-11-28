@@ -21,7 +21,20 @@
             font-style: normal;
         }
         body { background: #e0e0e0; color: #181818; font-family: 'Gobold', Arial, sans-serif; text-align: center; font-size: 84%; margin: 0; min-height: 100vh; }
-        #main-content { margin-left: 60px; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; box-sizing: border-box; }
+        #main-content { margin-left: 60px; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; box-sizing: border-box; position: relative; }
+        #score {
+            position: absolute;
+            top: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 2rem;
+            background: #232323;
+            color: #fff;
+            padding: 10px 30px;
+            border-radius: 12px;
+            box-shadow: 0 0 10px #000;
+            z-index: 10;
+        }
         #game-area {
             width: 420px;
             height: 520px;
@@ -81,20 +94,20 @@
                     <span id="cultivo-emoji" class="item-emoji">🧫 × <span id="cultivo-count" style="color: #fff;">0</span></span><br>
                     <button id="buy-lab">Comprar Laboratório (+10 BPS) - 150 🦠</button>
                     <span id="lab-emoji" class="item-emoji">🧪 × <span id="lab-count" style="color: #fff;">0</span></span><br>
-                    <button id="buy-quantum">Comprar Laboratório Quântico (+100 BPS) - 1500 🦠</button>
+                    <button id="buy-quantum">Comprar Laboratório Quântico (+100 BPS) - 1,5k 🦠</button>
                     <span id="quantum-emoji" class="item-emoji">⚛️ × <span id="quantum-count" style="color: #fff;">0</span></span><br>
-                    <button id="buy-colony">Comprar Colônia (+1000 BPS) - 15000 🦠</button>
+                    <button id="buy-colony">Comprar Colônia (+1k BPS) - 15k 🦠</button>
                     <span id="colony-emoji" class="item-emoji">🏘️ × <span id="colony-count" style="color: #fff;">0</span></span><br>
-                    <button id="buy-big-colony">Comprar Grande Colônia (+10000 BPS) - 150000 🦠</button>
+                    <button id="buy-big-colony">Comprar Grande Colônia (+10k BPS) - 150k 🦠</button>
                     <span id="big-colony-emoji" class="item-emoji">🏯 × <span id="big-colony-count" style="color: #fff;">0</span></span>
                 </div>
                 <div class="upgrade-column" id="click-upgrades" style="margin-top:10px;">
                     <h3 style="color:#fff; margin-bottom:6px;">Melhorias do Clique</h3>
-                    <button id="buy-farm1">Comprar Fazenda (+1 por clique) - 1000 🦠</button>
+                    <button id="buy-farm1">Comprar Fazenda (+1 por clique) - 1k 🦠</button>
                     <span id="farm1-emoji" class="item-emoji">🌾 × <span id="farm1-count" style="color: #fff;">0</span></span><br>
-                    <button id="buy-farm2">Comprar Grande Fazenda (+5 por clique) - 5000 🦠</button>
+                    <button id="buy-farm2">Comprar Grande Fazenda (+5 por clique) - 5k 🦠</button>
                     <span id="farm2-emoji" class="item-emoji">🚜 × <span id="farm2-count" style="color: #fff;">0</span></span><br>
-                    <button id="buy-farm3">Comprar Mega Fazenda (+20 por clique) - 20000 🦠</button>
+                    <button id="buy-farm3">Comprar Mega Fazenda (+20 por clique) - 20k 🦠</button>
                     <span id="farm3-emoji" class="item-emoji">🏭 × <span id="farm3-count" style="color: #fff;">0</span></span>
                 </div>
             </div>

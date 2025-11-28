@@ -125,3 +125,16 @@
             margin-left: 0;
             font-size: 1em;
         }
+        .gradient-box {
+            background: linear-gradient(to bottom, #a600ff, #00ff75);
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+            padding: 40px;
+            margin: 20px 0;
+            height: 200px;
+            width: 100%;
+            max-width: 600px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
