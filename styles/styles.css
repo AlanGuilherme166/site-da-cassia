@@ -165,8 +165,8 @@
         /* Imagens decorativas da Cássia nos cantos */
         .gradient-box .cassia-img {
             position: absolute;
-            width: 160px;
-            max-width: 30%;
+            width: 1000px;
+            max-width: none;
             height: auto;
             z-index: 1;
             pointer-events: none;
@@ -175,14 +175,14 @@
         }
 
         .gradient-box .cassia-bottom-right {
-            right: 18px;
-            bottom: 12px;
+            right: -145px;
+            bottom: -23px;
             transform: none;
         }
 
         .gradient-box .cassia-top-left {
-            left: 18px;
-            top: 12px;
+            left: -145px;
+            top: 0px;
             transform: scale(-1, -1);
         }
 
