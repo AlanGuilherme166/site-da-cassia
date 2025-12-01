@@ -173,16 +173,16 @@
             transition: transform 0.28s ease, opacity 0.28s ease;
         }
 
-        /* Imagem adicionada: posicionada 20px da borda esquerda e verticalmente centralizada */
         .gradient-box .screenshot-img {
             position: absolute;
             left: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            max-width: 260px;
-            height: auto;
-            z-index: 2;
-            border-radius: 8px;
+            top: 75px;
+            height: calc(100% - 150px);
+            width: 160px;
+            max-width: 28%;
+            object-fit: cover;
+            z-index: 1;
+            border-radius: 16px;
             box-shadow: 0 8px 20px rgba(0,0,0,0.35);
         }
 
