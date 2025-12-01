@@ -176,10 +176,6 @@
         .gradient-box .screenshot-img {
             position: absolute;
             left: 20px;
-            top: 75px;
-            /* mantém 75px de espaço superior e inferior */
-            height: calc(100% - 150px);
-            /* força proporção 3:4 (largura:altura = 3:4) */
             aspect-ratio: 3 / 4;
             width: auto;
             max-width: 220px;
