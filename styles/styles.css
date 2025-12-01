@@ -11,7 +11,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-left: 0;
+            margin-left: 70px; /* igual à sidebar */
             height: 100px;
             transition: margin-left 0.3s ease;
             font-family: 'Gobold', 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', sans-serif;
