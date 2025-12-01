@@ -6,17 +6,27 @@
     <link rel="stylesheet" href="styles/style_horario.css">
 </head>
 <body>
-        <div class="sidebar">
+    <header>
+        <nav>
             <ul>
-                <li id="jogos-btn" style="cursor:pointer;"><span>Jogos</span></li>
-                <li id="calc-btn" style="cursor:pointer;"><span>Calculadoras</span></li>
-                <li><span>Biologia</span></li>
-                <li id="bacteria3d-btn" style="cursor:pointer;"><span>Modelo 3D molécula</span></li>
+                <li><a href="index.html">Voltar</a></li>
+                <li><a href="#">Sobre</a></li>
+                <li><a href="#">Contatos</a></li>
             </ul>
-        </div>
-        <div class="content">
-        <h1>Quadro de Horários da Professora Ana Paula</h1>
-         <table id="quadro-horarios">
+        </nav>
+    </header>
+    <div class="sidebar">
+        <ul>
+            <li id="jogos-btn" style="cursor:pointer;"><span>Jogos</span></li>
+            <li id="calc-btn" style="cursor:pointer;"><span>Calculadoras</span></li>
+            <li><span>Biologia</span></li>
+            <li id="bacteria3d-btn" style="cursor:pointer;"><span>Modelo 3D molécula</span></li>
+        </ul>
+    </div>
+    <div class="content" style="display:flex;justify-content:center;align-items:center;min-height:80vh;">
+        <div style="background:#fff;border-radius:18px;box-shadow:0 8px 32px rgba(0,0,0,0.18);padding:32px 38px;max-width:700px;width:100%;margin:40px 0;">
+            <h1 style="text-align:center;color:#210027;font-size:2em;margin-bottom:18px;">Quadro de Horários da Professora Ana Paula</h1>
+            <table id="quadro-horarios" style="margin:0 auto;">
             <thead>
             <tr>
                 <th>Horário</th>
@@ -114,8 +124,9 @@
                         <td data-dia="Sábado"></td>
                     </tr>
             </tbody>
-        </table>
+            </table>
         </div>
-        <script src="scripts/horario_prof.js"></script>
+    </div>
+    <script src="scripts/horario_prof.js"></script>
 </body>
 </html>
