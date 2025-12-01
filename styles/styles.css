@@ -177,9 +177,12 @@
             position: absolute;
             left: 20px;
             top: 75px;
+            /* mantém 75px de espaço superior e inferior */
             height: calc(100% - 150px);
-            width: 160px;
-            max-width: 28%;
+            /* força proporção 3:4 (largura:altura = 3:4) */
+            aspect-ratio: 3 / 4;
+            width: auto;
+            max-width: 220px;
             object-fit: cover;
             z-index: 1;
             border-radius: 16px;
