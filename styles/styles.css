@@ -7,11 +7,11 @@
         header {
             background: #210027;
             color: white;
-            padding: 15px;
+            padding: 15px 0 15px 0;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-left: 50px;
+            margin-left: 0;
             height: 100px;
             transition: margin-left 0.3s ease;
             font-family: 'Gobold', 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', sans-serif;
