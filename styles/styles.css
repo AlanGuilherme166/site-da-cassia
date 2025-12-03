@@ -219,11 +219,3 @@
             .gradient-box h1 { font-size: 20px; }
             .gradient-box p { font-size: 13px; }
         }
-        header {
-            ckan-logo {
-                height: 40px;
-                cursor: pointer;
-                position: margin-right;
-                scale: 0.2;
-            }
-        }
