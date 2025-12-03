@@ -52,7 +52,7 @@
             background-color: #020002;
             transition: width 0.3s ease;
             padding-top: 20px;
-            z-index: 10;
+            z-index: 1000;
             overflow-x: hidden;
         }
         .sidebar:hover {
