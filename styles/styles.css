@@ -34,7 +34,7 @@
             text-decoration: underline;
         }
         body {
-            background: #e0e0e0;
+            background: linear-gradient(135deg, #E2C1E3 0%, white 100%);
             color: #181818;
             font-family: 'Gobold', Arial, sans-serif;
             text-align: center;
