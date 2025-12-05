@@ -1,0 +1,433 @@
+/* ==================================================
+   BLOCO COMUM: Gradiente decorativo superior
+   -------------------------------------------------- */
+.colorgraph {
+    height: 5px;
+    border: none;
+    border-top: 0;
+    border-radius: 5px;
+    background: linear-gradient(to right,
+        #c4e17f 0%, #c4e17f 12.5%,
+        #f7fdca 12.5%, #f7fdca 25%,
+        #fecf71 25%, #fecf71 37.5%,
+        #f0776c 37.5%, #f0776c 50%,
+        #db9dbe 50%, #db9dbe 62.5%,
+        #c49cde 62.5%, #c49cde 75%,
+        #669ae1 75%, #669ae1 87.5%,
+        #62c2e4 87.5%, #62c2e4 100%
+    );
+}
+
+/* ==================================================
+   BACKGROUND PARA HTML E BODY
+   -------------------------------------------------- */
+.wallpaper {
+    height: 100%;
+    margin: 0;
+    background-repeat: no-repeat;
+    background-image: linear-gradient(rgb(104, 145, 162), rgb(12, 97, 33));
+}
+
+/* ==================================================
+   COMPONENTE CARD: Variações e layout base
+   -------------------------------------------------- */
+.card {
+    background-color: #F7F7F7;
+    padding: 20px 25px 30px;
+    margin: 0 auto 25px;
+    margin-top: 50px;
+    border-radius: 2px;
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+}
+
+.card-container.card {
+    max-width: 500px;
+    /*height: 350%;*/
+    padding: 25px 25px;
+    margin: 25px auto;
+    box-sizing: border-box;
+}
+
+/* ==================================================
+   BOTÕES E ESTILOS COMUNS DE INTERAÇÃO
+   -------------------------------------------------- */
+.btn, .btn button {
+    font-weight: 700;
+    height: 36px;
+    user-select: none;
+    cursor: pointer;
+}
+
+.btn-menu button {
+    width: 150px;
+}
+
+.btn-footer button {
+    width: 100px;
+    align-items: center;
+}
+
+.btn.btn-signin {
+    background-color: rgb(104, 145, 162);
+    font-weight: 700;
+    font-size: 14px;
+    height: 36px;
+    border-radius: 0px;
+    border: none;
+    transition: all 0.218s;
+}
+
+.btn.btn-signin:hover,
+.btn.btn-signin:active,
+.btn.btn-signin:focus {
+    background-color: rgb(12, 97, 33);
+}
+
+/* ==================================================
+   FORMULÁRIOS E INPUTS
+   -------------------------------------------------- */
+.form-signin input[type=email],
+.form-signin input[type=password],
+.form-signin input[type=text],
+.form-signin button {
+    width: 100%;
+    display: block;
+    margin-bottom: 10px;
+    height: 44px;
+    font-size: 16px;
+    border-radius: 0px;
+    box-sizing: border-box;
+    position: relative;
+}
+
+.form-signin .form-control:focus {
+    border-color: rgb(104, 145, 162);
+    outline: 0;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgb(104, 145, 162);
+}
+
+/* ==================================================
+   PERFIL - REGISTRO / LOGIN
+   -------------------------------------------------- */
+.profile-img-card {
+    width: 20px;
+    height: 20px;
+    margin: 0 auto 10px;
+    display: block;
+    border-radius: 50%;
+}
+
+.profile-name-card {
+    font-size: 8px;
+    font-weight: bold;
+    text-align: center;
+    margin: 2px 0 0;
+    min-height: 1em;
+}
+
+.reauth-email {
+    display: block;
+    color: #404040;
+    line-height: 2;
+    margin-bottom: 10px;
+    font-size: 14px;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    box-sizing: border-box;
+}
+
+/* ==================================================
+   OPÇÕES DE RESPOSTA (QUIZ/AVALIAÇÃO)
+   -------------------------------------------------- */
+.option {
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.option:hover {
+    color: #004085;
+    background: #cce5ff;
+    border: 1px solid #b8daff;
+}
+
+.option.correct {
+    color: #155724;
+    background: #d4edda;
+    border: 1px solid #c3e6cb;
+}
+
+.option.incorrect {
+    color: #721c24;
+    background: #f8d7da;
+    border: 1px solid #f5c6cb;
+}
+
+.option.disabled {
+    pointer-events: none;
+}
+
+.option .icon {
+    height: 15px;
+    width: 15px;
+    border: 2px solid transparent;
+    border-radius: 50%;
+    text-align: center;
+    font-size: 10px;
+    pointer-events: none;
+    transition: all 0.3s ease;
+    line-height: 12px;
+}
+
+.icon.tick {
+    color: #23903c;
+    border-color: #23903c;
+    background: #d4edda;
+}
+
+.icon.cross {
+    color: #a42834;
+    background: #f8d7da;
+    border-color: #a42834;
+}
+
+/* ==================================================
+   ELEMENTOS AUXILIARES E MENSAGENS
+   -------------------------------------------------- */
+.choice-prefix {
+    padding: 1rem 2rem;
+    background-color: #56a5eb;
+    color: white;
+}
+
+.choice-text {
+    padding: 1rem;
+    width: 100%;
+}
+
+.forgot-password {
+    color: rgb(104, 145, 162);
+}
+
+.forgot-password:hover,
+.forgot-password:active,
+.forgot-password:focus {
+    color: rgb(12, 97, 33);
+    text-decoration: underline;
+}
+
+.error {
+    background-color: red;
+    color: white;
+    padding: 6px 10px;
+    border-radius: 4px;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.visually-hidden {
+    position: absolute !important;
+    height: 1px;
+    width: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+}
+
+/* ==================================================
+   IFRAME LAYOUT RESPONSIVO
+   -------------------------------------------------- */
+.iframe-wrapper {
+    width: 100%;
+    height: 75vh;
+    max-height: 100%;
+    overflow: hidden;
+    position: relative;
+    border-radius: 6px;
+}
+
+#iframe_actions {
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: block;
+}
+
+/* Responsividade para telas pequenas */
+@media screen and (max-width: 480px) {
+    .iframe-wrapper {
+        height: 85vh;
+    }
+
+    #profile {
+        font-size: 0.8rem;
+        text-align: right;
+    }
+
+    .dropdown-menu {
+        font-size: 14px;
+    }
+}
+
+/* ==================================================
+   ROLETA DE SORTEIO (luck.css)
+   -------------------------------------------------- */
+.folha {
+    position: relative;
+    background-color: #ffffff;
+    width: 400px;
+    height: 400px;
+    padding: 50px;
+}
+
+.roleta {
+    border: 5px solid #020202;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.seta {
+    position: absolute;
+    left: 45%;
+    border-bottom: 0px solid transparent;
+    border-left: 20px solid transparent;
+    border-right: 20px solid transparent;
+    border-top: 40px solid #33c9dc;
+    width: 0;
+    height: 0;
+    z-index: 999;
+    animation: animacaoSeta .35s linear infinite;
+}
+
+/* Elementos de cada fatia da roleta */
+.box1, .box2, .box3, .box4, .box5, .box6, .box7, .box8 {
+    position: absolute;
+    width: 0;
+    height: 0;
+}
+
+.box1 {
+    border-top: 80px solid transparent;
+    border-right: 80px solid transparent;
+    border-bottom: 80px solid #f6685e;
+    border-left: 80px solid #f6685e;
+}
+
+.box2 {
+    border-top: 80px solid #9c27b0;
+    border-right: 80px solid transparent;
+    border-bottom: 80px solid transparent;
+    border-left: 80px solid #9c27b0;
+    left: 50%;
+}
+
+.box3 {
+    border-top: 80px solid #009688;
+    border-right: 80px solid transparent;
+    border-bottom: 80px solid transparent;
+    border-left: 80px solid #009688;
+    top: 50%;
+}
+
+.box4 {
+    border-top: 80px solid transparent;
+    border-right: 80px solid transparent;
+    border-bottom: 80px solid #2196f3;
+    border-left: 80px solid #2196f3;
+    top: 50%;
+    left: 50%;
+}
+
+.box5 {
+    border-top: 80px solid #e91e63;
+    border-right: 80px solid #e91e63;
+    border-bottom: 80px solid transparent;
+    border-left: 80px solid transparent;
+}
+
+.box6 {
+    border-top: 80px solid transparent;
+    border-right: 80px solid #673ab7;
+    border-bottom: 80px solid #673ab7;
+    border-left: 80px solid transparent;
+    left: 50%;
+}
+
+.box7 {
+    border-top: 80px solid transparent;
+    border-right: 80px solid #ffb43b;
+    border-bottom: 80px solid #ffb43b;
+    border-left: 80px solid transparent;
+    top: 50%;
+}
+
+.box8 {
+    border-top: 80px solid #34399d;
+    border-right: 80px solid #34399d;
+    border-bottom: 80px solid transparent;
+    border-left: 80px solid transparent;
+    top: 50%;
+    left: 50%;
+}
+
+/* Animações para a roleta e a seta */
+@keyframes roleta {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes animacaoSeta {
+    0% { transform: rotate(0deg); }
+    25% { transform: rotate(-15deg); }
+    75% { transform: rotate(15deg); }
+    100% { transform: rotate(0deg); }
+}
+
+/* Estilo dos textos dos prêmios */
+.premio {
+    position: absolute;
+    z-index: 999;
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+}
+
+.premio1 { top: 35%; left: 16%; transform: rotate(25deg); }
+.premio2 { top: 20%; left: 30%; transform: rotate(55deg); }
+.premio3 { top: 22%; left: 52%; transform: rotate(115deg); }
+.premio4 { top: 36%; right: 15%; transform: rotate(150deg); }
+.premio5 { top: 58%; right: 15%; transform: rotate(200deg); }
+.premio6 { top: 75%; right: 30%; transform: rotate(250deg); }
+.premio7 { top: 73%; left: 30%; transform: rotate(306deg); }
+.premio8 { top: 58%; left: 18%; transform: rotate(333deg); }
+
+.btnRoleta {
+    position: absolute;
+    color: white;
+    background-color: #000;
+    border: 20px solid #000;
+    cursor: pointer;
+    top: 40%;
+    left: 40%;
+    font-size: 20px;
+    border-radius: 50%;
+    height: 20px;
+    width: 20px;
+    text-align: center;
+}
+
+.play {
+    z-index: 999;
+}
+
+.stop {
+    animation-play-state: paused;
+}
